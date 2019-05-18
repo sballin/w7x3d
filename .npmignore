@@ -1,5 +1,5 @@
 examples/*
-!examples/js/
+!js/
 test/
 utils/
 docs/

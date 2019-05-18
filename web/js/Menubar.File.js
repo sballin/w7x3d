@@ -371,7 +371,7 @@ Menubar.File = function ( editor ) {
 			zip.file( 'js/app.js', content );
 
 		} );
-		loader.load( '../build/three.min.js', function ( content ) {
+		loader.load( '../js/three.min.js', function ( content ) {
 
 			zip.file( 'js/three.min.js', content );
 
@@ -379,7 +379,7 @@ Menubar.File = function ( editor ) {
 
 		if ( vr ) {
 
-			loader.load( '../examples/js/vr/WebVR.js', function ( content ) {
+			loader.load( '../js/vr/WebVR.js', function ( content ) {
 
 				zip.file( 'js/WebVR.js', content );
 

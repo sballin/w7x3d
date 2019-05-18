@@ -48555,7 +48555,7 @@ ImageUtils.loadCompressedTextureCube = function () {
 
 function Projector() {
 
-	console.error( 'THREE.Projector has been moved to /examples/js/renderers/Projector.js.' );
+	console.error( 'THREE.Projector has been moved to /js/renderers/Projector.js.' );
 
 	this.projectVector = function ( vector, camera ) {
 
@@ -48601,19 +48601,19 @@ var SceneUtils = {
 
 	createMultiMaterialObject: function ( /* geometry, materials */ ) {
 
-		console.error( 'THREE.SceneUtils has been moved to /examples/js/utils/SceneUtils.js' );
+		console.error( 'THREE.SceneUtils has been moved to /js/utils/SceneUtils.js' );
 
 	},
 
 	detach: function ( /* child, parent, scene */ ) {
 
-		console.error( 'THREE.SceneUtils has been moved to /examples/js/utils/SceneUtils.js' );
+		console.error( 'THREE.SceneUtils has been moved to /js/utils/SceneUtils.js' );
 
 	},
 
 	attach: function ( /* child, scene, parent */ ) {
 
-		console.error( 'THREE.SceneUtils has been moved to /examples/js/utils/SceneUtils.js' );
+		console.error( 'THREE.SceneUtils has been moved to /js/utils/SceneUtils.js' );
 
 	}
 
@@ -48623,7 +48623,7 @@ var SceneUtils = {
 
 function LensFlare() {
 
-	console.error( 'THREE.LensFlare has been moved to /examples/js/objects/Lensflare.js' );
+	console.error( 'THREE.LensFlare has been moved to /js/objects/Lensflare.js' );
 
 }
 

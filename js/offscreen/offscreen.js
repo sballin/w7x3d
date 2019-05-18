@@ -1,4 +1,4 @@
-self.importScripts( '../../../build/three.js' );
+self.importScripts( '../../../js/three.js' );
 self.importScripts( './scene.js' );
 
 self.onmessage = function ( message ) {
