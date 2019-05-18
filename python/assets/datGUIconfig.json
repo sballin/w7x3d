@@ -1,0 +1,119 @@
+{
+  "closed": false,
+  "remembered": {
+    "undefined": {
+      "0": {
+        "magneticConfig": "A_standard_beta-0",
+        "startR": 6.498,
+        "startZ": -0.243,
+        "startPhi": 4.876,
+        "endR": 6.24,
+        "endZ": 0.126,
+        "endPhi": 5.055,
+        "chordLength": 1224.1090082258381,
+        "angleWithBdeg": 6.6239449403818025
+      }
+    },
+    "AEE50_1": {
+      "0": {
+        "startR": 6.433,
+        "startZ": -0.243,
+        "startPhi": 4.876,
+        "endR": 6.24,
+        "endZ": -0.08700000000000001,
+        "endPhi": 5.055,
+        "chordLength": 1159.4575013031563
+      }
+    },
+    "AEE50_2": {
+      "0": {
+        "startR": 6.5,
+        "startZ": 0,
+        "startPhi": 4.876,
+        "endR": 6.22,
+        "endZ": 0.156,
+        "endPhi": 4.99,
+        "chordLength": 792.2092448483415
+      }
+    },
+    "AEK50_1": {
+      "0": {
+        "startR": 6.337,
+        "startZ": -0.22,
+        "startPhi": 4.739,
+        "endR": 6.24,
+        "endZ": 0.05,
+        "endPhi": 4.931,
+        "chordLength": 1239.1711528888795
+      }
+    },
+    "AEK50_2": {
+      "0": {
+        "startR": 6.356,
+        "startZ": -0.22,
+        "startPhi": 4.739,
+        "endR": 6.188,
+        "endZ": -0.05,
+        "endPhi": 4.865,
+        "chordLength": 825.0552376733483
+      }
+    },
+    "AEE50 port span": {
+      "0": {
+        "startR": 6.3500000000000005,
+        "startZ": -0.243,
+        "startPhi": 4.866,
+        "endR": 6.38,
+        "endZ": -0.247,
+        "endPhi": 4.93,
+        "chordLength": 408.41230938053275
+      }
+    },
+    "AEE50_tube_above": {
+      "0": {
+        "magneticConfig": "A_standard_beta-0",
+        "startR": 6.5,
+        "startZ": 0,
+        "startPhi": 4.876,
+        "endR": 6.22,
+        "endZ": 0.156,
+        "endPhi": 4.99,
+        "chordLength": 792.2092448483415
+      }
+    },
+    "AEE51_span": {
+      "0": {
+        "startR": 6.41,
+        "startZ": 0.056,
+        "startPhi": 4.9910000000000005,
+        "endR": 6.42,
+        "endZ": 0.056,
+        "endPhi": 5.053,
+        "chordLength": 397.79189290962074
+      }
+    }
+  },
+  "folders": {
+    "Controls": {
+      "preset": "Default",
+      "closed": false,
+      "folders": {}
+    },
+    "Start": {
+      "preset": "Default",
+      "closed": false,
+      "folders": {}
+    },
+    "End": {
+      "preset": "Default",
+      "closed": false,
+      "folders": {}
+    },
+    "Chord": {
+      "preset": "Default",
+      "closed": false,
+      "folders": {}
+    }
+  },
+  "preset": "undefined"
+}
