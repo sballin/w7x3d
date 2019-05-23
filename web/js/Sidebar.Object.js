@@ -306,13 +306,13 @@ Sidebar.Object = function ( editor ) {
 
 	// frustumCulled
 
-	var objectFrustumCulledRow = new UI.Row();
-	var objectFrustumCulled = new UI.Checkbox().onChange( update );
+	// var objectFrustumCulledRow = new UI.Row();
+	// var objectFrustumCulled = new UI.Checkbox().onChange( update );
 
-	objectFrustumCulledRow.add( new UI.Text( strings.getKey( 'sidebar/object/frustumcull' ) ).setWidth( '90px' ) );
-	objectFrustumCulledRow.add( objectFrustumCulled );
+	// objectFrustumCulledRow.add( new UI.Text( strings.getKey( 'sidebar/object/frustumcull' ) ).setWidth( '90px' ) );
+	// objectFrustumCulledRow.add( objectFrustumCulled );
 
-	container.add( objectFrustumCulledRow );
+	// container.add( objectFrustumCulledRow );
 
 	// renderOrder
 
@@ -539,11 +539,11 @@ Sidebar.Object = function ( editor ) {
 
 			}
 
-			if ( object.frustumCulled !== objectFrustumCulled.getValue() ) {
+			// if ( object.frustumCulled !== objectFrustumCulled.getValue() ) {
 
-				editor.execute( new SetValueCommand( object, 'frustumCulled', objectFrustumCulled.getValue() ) );
+			// 	editor.execute( new SetValueCommand( object, 'frustumCulled', objectFrustumCulled.getValue() ) );
 
-			}
+			// }
 
 			if ( object.renderOrder !== objectRenderOrder.getValue() ) {
 
@@ -797,7 +797,7 @@ Sidebar.Object = function ( editor ) {
 		}
 
 		objectVisible.setValue( object.visible );
-		objectFrustumCulled.setValue( object.frustumCulled );
+		// objectFrustumCulled.setValue( object.frustumCulled );
 		objectRenderOrder.setValue( object.renderOrder );
 
 		try {
