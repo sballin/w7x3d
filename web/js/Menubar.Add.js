@@ -45,7 +45,7 @@ Menubar.Add = function ( editor ) {
 	option.onClick( function () {
 
 		var geometry = new THREE.PlaneBufferGeometry( 1, 1, 1, 1 );
-		var material = new THREE.MeshStandardMaterial();
+		var material = new THREE.MeshStandardMaterial({side: THREE.DoubleSide});
 		var mesh = new THREE.Mesh( geometry, material );
 		mesh.name = 'Plane';
 
@@ -62,7 +62,7 @@ Menubar.Add = function ( editor ) {
 	option.onClick( function () {
 
 		var geometry = new THREE.BoxBufferGeometry( 1, 1, 1, 1, 1, 1 );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial() );
+		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Box';
 
 		editor.execute( new AddObjectCommand( mesh ) );
@@ -78,7 +78,7 @@ Menubar.Add = function ( editor ) {
 	option.onClick( function () {
 
 		var geometry = new THREE.CircleBufferGeometry( 1, 8, 0, Math.PI * 2 );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial() );
+		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Circle';
 
 		editor.execute( new AddObjectCommand( mesh ) );
@@ -94,7 +94,7 @@ Menubar.Add = function ( editor ) {
 	option.onClick( function () {
 
 		var geometry = new THREE.CylinderBufferGeometry( 1, 1, 1, 8, 1, false, 0, Math.PI * 2 );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial() );
+		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Cylinder';
 
 		editor.execute( new AddObjectCommand( mesh ) );
@@ -110,7 +110,7 @@ Menubar.Add = function ( editor ) {
 	option.onClick( function () {
 
 		var geometry = new THREE.SphereBufferGeometry( 1, 8, 6, 0, Math.PI * 2, 0, Math.PI );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial() );
+		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Sphere';
 
 		editor.execute( new AddObjectCommand( mesh ) );
@@ -120,19 +120,19 @@ Menubar.Add = function ( editor ) {
 
 	// Torus
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/add/torus' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/add/torus' ) );
+	// option.onClick( function () {
 
-		var geometry = new THREE.TorusBufferGeometry( 1, 0.4, 8, 6, Math.PI * 2 );
-		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial() );
-		mesh.name = 'Torus';
+	// 	var geometry = new THREE.TorusBufferGeometry( 1, 0.4, 8, 6, Math.PI * 2 );
+	// 	var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
+	// 	mesh.name = 'Torus';
 
-		editor.execute( new AddObjectCommand( mesh ) );
+	// 	editor.execute( new AddObjectCommand( mesh ) );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
 	// // Sprite
 

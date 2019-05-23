@@ -35,33 +35,33 @@ Sidebar.Project = function ( editor ) {
 
 	container.add( titleRow );
 
-	// Editable
+	// // Editable
 
-	var editableRow = new UI.Row();
-	var editable = new UI.Checkbox( config.getKey( 'project/editable' ) ).setLeft( '100px' ).onChange( function () {
+	// var editableRow = new UI.Row();
+	// var editable = new UI.Checkbox( config.getKey( 'project/editable' ) ).setLeft( '100px' ).onChange( function () {
 
-		config.setKey( 'project/editable', this.getValue() );
+	// 	config.setKey( 'project/editable', this.getValue() );
 
-	} );
+	// } );
 
-	editableRow.add( new UI.Text( strings.getKey( 'sidebar/project/editable' ) ).setWidth( '90px' ) );
-	editableRow.add( editable );
+	// editableRow.add( new UI.Text( strings.getKey( 'sidebar/project/editable' ) ).setWidth( '90px' ) );
+	// editableRow.add( editable );
 
-	container.add( editableRow );
+	// container.add( editableRow );
 
-	// VR
+	// // VR
 
-	var vrRow = new UI.Row();
-	var vr = new UI.Checkbox( config.getKey( 'project/vr' ) ).setLeft( '100px' ).onChange( function () {
+	// var vrRow = new UI.Row();
+	// var vr = new UI.Checkbox( config.getKey( 'project/vr' ) ).setLeft( '100px' ).onChange( function () {
 
-		config.setKey( 'project/vr', this.getValue() );
+	// 	config.setKey( 'project/vr', this.getValue() );
 
-	} );
+	// } );
 
-	vrRow.add( new UI.Text( strings.getKey( 'sidebar/project/vr' ) ).setWidth( '90px' ) );
-	vrRow.add( vr );
+	// vrRow.add( new UI.Text( strings.getKey( 'sidebar/project/vr' ) ).setWidth( '90px' ) );
+	// vrRow.add( vr );
 
-	container.add( vrRow );
+	// container.add( vrRow );
 
 	// Renderer
 

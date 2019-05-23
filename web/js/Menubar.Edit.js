@@ -119,148 +119,148 @@ Menubar.Edit = function ( editor ) {
 	} );
 	options.add( option );
 
-	// Minify shaders
+	// // Minify shaders
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/edit/minify_shaders' ) );
-	option.onClick( function() {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/edit/minify_shaders' ) );
+	// option.onClick( function() {
 
-		var root = editor.selected || editor.scene;
+	// 	var root = editor.selected || editor.scene;
 
-		var errors = [];
-		var nMaterialsChanged = 0;
+	// 	var errors = [];
+	// 	var nMaterialsChanged = 0;
 
-		var path = [];
+	// 	var path = [];
 
-		function getPath ( object ) {
+	// 	function getPath ( object ) {
 
-			path.length = 0;
+	// 		path.length = 0;
 
-			var parent = object.parent;
-			if ( parent !== undefined ) getPath( parent );
+	// 		var parent = object.parent;
+	// 		if ( parent !== undefined ) getPath( parent );
 
-			path.push( object.name || object.uuid );
+	// 		path.push( object.name || object.uuid );
 
-			return path;
+	// 		return path;
 
-		}
+	// 	}
 
-		var cmds = [];
-		root.traverse( function ( object ) {
+	// 	var cmds = [];
+	// 	root.traverse( function ( object ) {
 
-			var material = object.material;
+	// 		var material = object.material;
 
-			if ( material.isShaderMaterial ) {
+	// 		if ( material.isShaderMaterial ) {
 
-				try {
+	// 			try {
 
-					var shader = glslprep.minifyGlsl( [
-							material.vertexShader, material.fragmentShader ] );
+	// 				var shader = glslprep.minifyGlsl( [
+	// 						material.vertexShader, material.fragmentShader ] );
 
-					cmds.push( new SetMaterialValueCommand( object, 'vertexShader', shader[ 0 ] ) );
-					cmds.push( new SetMaterialValueCommand( object, 'fragmentShader', shader[ 1 ] ) );
+	// 				cmds.push( new SetMaterialValueCommand( object, 'vertexShader', shader[ 0 ] ) );
+	// 				cmds.push( new SetMaterialValueCommand( object, 'fragmentShader', shader[ 1 ] ) );
 
-					++nMaterialsChanged;
+	// 				++nMaterialsChanged;
 
-				} catch ( e ) {
+	// 			} catch ( e ) {
 
-					var path = getPath( object ).join( "/" );
+	// 				var path = getPath( object ).join( "/" );
 
-					if ( e instanceof glslprep.SyntaxError )
+	// 				if ( e instanceof glslprep.SyntaxError )
 
-						errors.push( path + ":" +
-								e.line + ":" + e.column + ": " + e.message );
+	// 					errors.push( path + ":" +
+	// 							e.line + ":" + e.column + ": " + e.message );
 
-					else {
+	// 				else {
 
-						errors.push( path +
-								": Unexpected error (see console for details)." );
+	// 					errors.push( path +
+	// 							": Unexpected error (see console for details)." );
 
-						console.error( e.stack || e );
+	// 					console.error( e.stack || e );
 
-					}
+	// 				}
 
-				}
+	// 			}
 
-			}
+	// 		}
 
-		} );
+	// 	} );
 
-		if ( nMaterialsChanged > 0 ) {
+	// 	if ( nMaterialsChanged > 0 ) {
 
-			editor.execute( new MultiCmdsCommand( cmds ), 'Minify Shaders' );
+	// 		editor.execute( new MultiCmdsCommand( cmds ), 'Minify Shaders' );
 
-		}
+	// 	}
 
-		window.alert( nMaterialsChanged +
-				" material(s) were changed.\n" + errors.join( "\n" ) );
+	// 	window.alert( nMaterialsChanged +
+	// 			" material(s) were changed.\n" + errors.join( "\n" ) );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	options.add( new UI.HorizontalRule() );
+	// options.add( new UI.HorizontalRule() );
 
-	// Set textures to sRGB. See #15903
+	// // Set textures to sRGB. See #15903
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/edit/fixcolormaps' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/edit/fixcolormaps' ) );
+	// option.onClick( function () {
 
-		editor.scene.traverse( fixColorMap );
+	// 	editor.scene.traverse( fixColorMap );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	var colorMaps = [ 'map', 'envMap', 'emissiveMap' ];
+	// var colorMaps = [ 'map', 'envMap', 'emissiveMap' ];
 
-	function fixColorMap( obj ) {
+	// function fixColorMap( obj ) {
 
-		var material = obj.material;
+	// 	var material = obj.material;
 
-		if ( material !== undefined ) {
+	// 	if ( material !== undefined ) {
 
-			if ( Array.isArray( material ) === true ) {
+	// 		if ( Array.isArray( material ) === true ) {
 
-				for ( var i = 0; i < material.length; i ++ ) {
+	// 			for ( var i = 0; i < material.length; i ++ ) {
 
-					fixMaterial( material[ i ] );
+	// 				fixMaterial( material[ i ] );
 
-				}
+	// 			}
 
-			} else {
+	// 		} else {
 
-				fixMaterial( material );
+	// 			fixMaterial( material );
 
-			}
+	// 		}
 
-			editor.signals.sceneGraphChanged.dispatch();
+	// 		editor.signals.sceneGraphChanged.dispatch();
 
-		}
+	// 	}
 
-	}
+	// }
 
-	function fixMaterial( material ) {
+	// function fixMaterial( material ) {
 
-		var needsUpdate = material.needsUpdate;
+	// 	var needsUpdate = material.needsUpdate;
 
-		for ( var i = 0; i < colorMaps.length; i ++ ) {
+	// 	for ( var i = 0; i < colorMaps.length; i ++ ) {
 
-			var map = material[ colorMaps[ i ] ];
+	// 		var map = material[ colorMaps[ i ] ];
 
-			if ( map ) {
+	// 		if ( map ) {
 
-				map.encoding = THREE.sRGBEncoding;
-				needsUpdate = true;
+	// 			map.encoding = THREE.sRGBEncoding;
+	// 			needsUpdate = true;
 
-			}
+	// 		}
 
-		}
+	// 	}
 
-		material.needsUpdate = needsUpdate;
+	// 	material.needsUpdate = needsUpdate;
 
-	}
+	// }
 
 	return container;
 

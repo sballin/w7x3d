@@ -15,64 +15,64 @@ Sidebar.Settings = function ( editor ) {
 
 	// language
 
-	var options = {
-		en: 'English',
-		zh: '中文'
-	};
+	// var options = {
+	// 	en: 'English',
+	// 	zh: '中文'
+	// };
 
-	var languageRow = new UI.Row();
-	var language = new UI.Select().setWidth( '150px' );
-	language.setOptions( options );
+	// var languageRow = new UI.Row();
+	// var language = new UI.Select().setWidth( '150px' );
+	// language.setOptions( options );
 
-	if ( config.getKey( 'language' ) !== undefined ) {
+	// if ( config.getKey( 'language' ) !== undefined ) {
 
-		language.setValue( config.getKey( 'language' ) );
+	// 	language.setValue( config.getKey( 'language' ) );
 
-	}
+	// }
 
-	language.onChange( function () {
+	// language.onChange( function () {
 
-		var value = this.getValue();
+	// 	var value = this.getValue();
 
-		editor.config.setKey( 'language', value );
+	// 	editor.config.setKey( 'language', value );
 
-	} );
+	// } );
 
-	languageRow.add( new UI.Text( strings.getKey( 'sidebar/settings/language' ) ).setWidth( '90px' ) );
-	languageRow.add( language );
+	// languageRow.add( new UI.Text( strings.getKey( 'sidebar/settings/language' ) ).setWidth( '90px' ) );
+	// languageRow.add( language );
 
-	container.add( languageRow );
+	// container.add( languageRow );
 
 	// theme
 
-	var options = {
-		'css/light.css': strings.getKey( 'sidebar/settings/theme/light' ),
-		'css/dark.css': strings.getKey( 'sidebar/settings/theme/dark' )
-	};
+	// var options = {
+	// 	'css/light.css': strings.getKey( 'sidebar/settings/theme/light' ),
+	// 	'css/dark.css': strings.getKey( 'sidebar/settings/theme/dark' )
+	// };
 
-	var themeRow = new UI.Row();
-	var theme = new UI.Select().setWidth( '150px' );
-	theme.setOptions( options );
+	// var themeRow = new UI.Row();
+	// var theme = new UI.Select().setWidth( '150px' );
+	// theme.setOptions( options );
 
-	if ( config.getKey( 'theme' ) !== undefined ) {
+	// if ( config.getKey( 'theme' ) !== undefined ) {
 
-		theme.setValue( config.getKey( 'theme' ) );
+	// 	theme.setValue( config.getKey( 'theme' ) );
 
-	}
+	// }
 
-	theme.onChange( function () {
+	// theme.onChange( function () {
 
-		var value = this.getValue();
+	// 	var value = this.getValue();
 
-		editor.setTheme( value );
-		editor.config.setKey( 'theme', value );
+	// 	editor.setTheme( value );
+	// 	editor.config.setKey( 'theme', value );
 
-	} );
+	// } );
 
-	themeRow.add( new UI.Text( strings.getKey( 'sidebar/settings/theme' ) ).setWidth( '90px' ) );
-	themeRow.add( theme );
+	// themeRow.add( new UI.Text( strings.getKey( 'sidebar/settings/theme' ) ).setWidth( '90px' ) );
+	// themeRow.add( theme );
 
-	container.add( themeRow );
+	// container.add( themeRow );
 
 	container.add( new Sidebar.Settings.Shortcuts( editor ) );
 	container.add( new Sidebar.Settings.Viewport( editor ) );
