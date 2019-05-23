@@ -267,7 +267,7 @@ Menubar.Add = function ( editor ) {
 	option.onClick( function () {
 
 		var camera = new THREE.PerspectiveCamera();
-		camera.name = 'PerspectiveCamera';
+		camera.name = 'New Camera';
 
 		editor.execute( new AddObjectCommand( camera ) );
 
