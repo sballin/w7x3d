@@ -102,20 +102,20 @@ Sidebar.Material = function ( editor ) {
 
 	// uuid
 
-	var materialUUIDRow = new UI.Row();
-	var materialUUID = new UI.Input().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
-	var materialUUIDRenew = new UI.Button( strings.getKey( 'sidebar/material/new' ) ).setMarginLeft( '7px' ).onClick( function () {
+	// var materialUUIDRow = new UI.Row();
+	// var materialUUID = new UI.Input().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
+	// var materialUUIDRenew = new UI.Button( strings.getKey( 'sidebar/material/new' ) ).setMarginLeft( '7px' ).onClick( function () {
 
-		materialUUID.setValue( THREE.Math.generateUUID() );
-		update();
+		// materialUUID.setValue( THREE.Math.generateUUID() );
+		// update();
 
-	} );
+	// } );
 
-	materialUUIDRow.add( new UI.Text( strings.getKey( 'sidebar/material/uuid' ) ).setWidth( '90px' ) );
-	materialUUIDRow.add( materialUUID );
-	materialUUIDRow.add( materialUUIDRenew );
+	// materialUUIDRow.add( new UI.Text( strings.getKey( 'sidebar/material/uuid' ) ).setWidth( '90px' ) );
+	// materialUUIDRow.add( materialUUID );
+	// materialUUIDRow.add( materialUUIDRenew );
 
-	container.add( materialUUIDRow );
+	// container.add( materialUUIDRow );
 
 	// name
 
@@ -573,11 +573,11 @@ Sidebar.Material = function ( editor ) {
 
 		if ( material ) {
 
-			if ( material.uuid !== undefined && material.uuid !== materialUUID.getValue() ) {
+			// if ( material.uuid !== undefined && material.uuid !== materialUUID.getValue() ) {
 
-				editor.execute( new SetMaterialValueCommand( currentObject, 'uuid', materialUUID.getValue(), currentMaterialSlot ) );
+			// 	editor.execute( new SetMaterialValueCommand( currentObject, 'uuid', materialUUID.getValue(), currentMaterialSlot ) );
 
-			}
+			// }
 
 			if ( material.type !== materialClass.getValue() ) {
 
@@ -1173,11 +1173,11 @@ Sidebar.Material = function ( editor ) {
 
 		material = editor.getObjectMaterial( currentObject, currentMaterialSlot );
 
-		if ( material.uuid !== undefined ) {
+		// if ( material.uuid !== undefined ) {
 
-			materialUUID.setValue( material.uuid );
+		// 	materialUUID.setValue( material.uuid );
 
-		}
+		// }
 
 		if ( material.name !== undefined ) {
 

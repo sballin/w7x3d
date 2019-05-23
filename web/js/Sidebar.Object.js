@@ -67,22 +67,23 @@ Sidebar.Object = function ( editor ) {
 	container.add( objectTypeRow );
 
 	// uuid
+	// commented out one more uuid reference in this file
 
-	var objectUUIDRow = new UI.Row();
-	var objectUUID = new UI.Input().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
-	var objectUUIDRenew = new UI.Button( strings.getKey( 'sidebar/object/new' ) ).setMarginLeft( '7px' ).onClick( function () {
+	// var objectUUIDRow = new UI.Row();
+	// var objectUUID = new UI.Input().setWidth( '102px' ).setFontSize( '12px' ).setDisabled( true );
+	// var objectUUIDRenew = new UI.Button( strings.getKey( 'sidebar/object/new' ) ).setMarginLeft( '7px' ).onClick( function () {
 
-		objectUUID.setValue( THREE.Math.generateUUID() );
+	// 	objectUUID.setValue( THREE.Math.generateUUID() );
 
-		editor.execute( new SetUuidCommand( editor.selected, objectUUID.getValue() ) );
+	// 	editor.execute( new SetUuidCommand( editor.selected, objectUUID.getValue() ) );
 
-	} );
+	// } );
 
-	objectUUIDRow.add( new UI.Text( strings.getKey( 'sidebar/object/uuid' ) ).setWidth( '90px' ) );
-	objectUUIDRow.add( objectUUID );
-	objectUUIDRow.add( objectUUIDRenew );
+	// objectUUIDRow.add( new UI.Text( strings.getKey( 'sidebar/object/uuid' ) ).setWidth( '90px' ) );
+	// objectUUIDRow.add( objectUUID );
+	// objectUUIDRow.add( objectUUIDRenew );
 
-	container.add( objectUUIDRow );
+	// container.add( objectUUIDRow );
 
 	// name
 
@@ -678,7 +679,7 @@ Sidebar.Object = function ( editor ) {
 
 		objectType.setValue( object.type );
 
-		objectUUID.setValue( object.uuid );
+		// objectUUID.setValue( object.uuid );
 		objectName.setValue( object.name );
 
 		objectPositionX.setValue( object.position.x );
