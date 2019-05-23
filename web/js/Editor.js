@@ -6,6 +6,7 @@ var Editor = function () {
 
 	this.DEFAULT_CAMERA = new THREE.PerspectiveCamera( 50, 1, 0.01, 1000 );
 	this.DEFAULT_CAMERA.name = 'Camera';
+	// this.DEFAULT_CAMERA.up = new THREE.Vector3(0, 0, 1);
 	this.DEFAULT_CAMERA.position.set( 0, 5, 10 );
 	this.DEFAULT_CAMERA.lookAt( new THREE.Vector3() );
 
@@ -85,6 +86,7 @@ var Editor = function () {
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
 	this.scene.background = new THREE.Color( 0xaaaaaa );
+	this.scene.rotation.x = -Math.PI/2; // z = up https://stackoverflow.com/q/25326587
 
 	this.sceneHelpers = new THREE.Scene();
 
