@@ -18,22 +18,22 @@ Menubar.Add = function ( editor ) {
 	options.setClass( 'options' );
 	container.add( options );
 
-	// // Group
+	// Group
 
-	// var option = new UI.Row();
-	// option.setClass( 'option' );
-	// option.setTextContent( strings.getKey( 'menubar/add/group' ) );
-	// option.onClick( function () {
+	var option = new UI.Row();
+	option.setClass( 'option' );
+	option.setTextContent( strings.getKey( 'menubar/add/group' ) );
+	option.onClick( function () {
 
-	// 	var mesh = new THREE.Group();
-	// 	mesh.name = 'Group';
+		var mesh = new THREE.Group();
+		mesh.name = 'Group';
 
-	// 	editor.execute( new AddObjectCommand( mesh ) );
+		editor.execute( new AddObjectCommand( mesh ) );
 
-	// } );
-	// options.add( option );
+	} );
+	options.add( option );
 
-	//
+	
 
 	options.add( new UI.HorizontalRule() );
 
