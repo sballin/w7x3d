@@ -85,7 +85,7 @@ var Editor = function () {
 
 	this.scene = new THREE.Scene();
 	this.scene.name = 'Scene';
-	this.scene.background = new THREE.Color( 0xaaaaaa );
+	this.scene.background = new THREE.Color( 0xd8d7d9 );
 	this.scene.rotation.x = -Math.PI/2; // z = up https://stackoverflow.com/q/25326587
 
 	this.sceneHelpers = new THREE.Scene();
@@ -506,7 +506,7 @@ Editor.prototype = {
 		this.camera.copy( this.DEFAULT_CAMERA );
 		this.scene.name = "Scene";
 		this.scene.userData = {};
-		this.scene.background.setHex( 0xaaaaaa );
+		this.scene.background.setHex( 0xd8d7d9 );
 		this.scene.fog = null;
 
 		var objects = this.scene.children;

@@ -1,7 +1,0 @@
-examples/*
-!js/
-test/
-utils/
-docs/
-editor/
-.DS_Store

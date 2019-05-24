@@ -77,7 +77,7 @@ Menubar.Add = function ( editor ) {
 	option.setTextContent( strings.getKey( 'menubar/add/circle' ) );
 	option.onClick( function () {
 
-		var geometry = new THREE.CircleBufferGeometry( 1, 8, 0, Math.PI * 2 );
+		var geometry = new THREE.CircleBufferGeometry( 1, 30, 0, Math.PI * 2 );
 		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Circle';
 
@@ -93,7 +93,7 @@ Menubar.Add = function ( editor ) {
 	option.setTextContent( strings.getKey( 'menubar/add/cylinder' ) );
 	option.onClick( function () {
 
-		var geometry = new THREE.CylinderBufferGeometry( 1, 1, 1, 8, 1, false, 0, Math.PI * 2 );
+		var geometry = new THREE.CylinderBufferGeometry( 1, 1, 1, 30, 1, false, 0, Math.PI * 2 );
 		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Cylinder';
 
@@ -109,7 +109,7 @@ Menubar.Add = function ( editor ) {
 	option.setTextContent( strings.getKey( 'menubar/add/sphere' ) );
 	option.onClick( function () {
 
-		var geometry = new THREE.SphereBufferGeometry( 1, 8, 6, 0, Math.PI * 2, 0, Math.PI );
+		var geometry = new THREE.SphereBufferGeometry( 1, 30, 30, 0, Math.PI * 2, 0, Math.PI );
 		var mesh = new THREE.Mesh( geometry, new THREE.MeshStandardMaterial({side: THREE.DoubleSide}) );
 		mesh.name = 'Sphere';
 
@@ -217,43 +217,43 @@ Menubar.Add = function ( editor ) {
 	// } );
 	// options.add( option );
 
-	// // HemisphereLight
-
-	// var option = new UI.Row();
-	// option.setClass( 'option' );
-	// option.setTextContent( strings.getKey( 'menubar/add/hemispherelight' ) );
-	// option.onClick( function () {
-
-	// 	var skyColor = 0x00aaff;
-	// 	var groundColor = 0xffaa00;
-	// 	var intensity = 1;
-
-	// 	var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
-	// 	light.name = 'HemisphereLight';
-
-	// 	light.position.set( 0, 10, 0 );
-
-	// 	editor.execute( new AddObjectCommand( light ) );
-
-	// } );
-	// options.add( option );
-
-	// AmbientLight
+	// HemisphereLight
 
 	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/add/ambientlight' ) );
+	option.setTextContent( strings.getKey( 'menubar/add/hemispherelight' ) );
 	option.onClick( function () {
 
-		var color = 0x222222;
+		var skyColor = 0xc5e7ff;
+		var groundColor = 0x3f4952;
+		var intensity = 1;
 
-		var light = new THREE.AmbientLight( color );
-		light.name = 'AmbientLight';
+		var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
+		light.name = 'HemisphereLight';
+
+		light.position.set( 0, 0, 10 );
 
 		editor.execute( new AddObjectCommand( light ) );
 
 	} );
 	options.add( option );
+
+	// // AmbientLight
+
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/add/ambientlight' ) );
+	// option.onClick( function () {
+
+	// 	var color = 0x222222;
+
+	// 	var light = new THREE.AmbientLight( color );
+	// 	light.name = 'AmbientLight';
+
+	// 	editor.execute( new AddObjectCommand( light ) );
+
+	// } );
+	// options.add( option );
 
 	//
 

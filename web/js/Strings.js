@@ -52,7 +52,7 @@ var Strings = function ( config ) {
 			'menubar/add/pointlight': 'Point Light',
 			'menubar/add/spotlight': 'Spotlight',
 			'menubar/add/directionallight': 'DirectionalLight',
-			'menubar/add/hemispherelight': 'HemisphereLight',
+			'menubar/add/hemispherelight': 'Hemisphere Light',
 			'menubar/add/ambientlight': 'Ambient Light',
 			'menubar/add/perspectivecamera': 'New Camera',
 			'menubar/add/orthographiccamera': 'OrthographicCamera',
