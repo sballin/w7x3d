@@ -112,7 +112,7 @@ const staticAssets = [
 	'./js/Menubar.Status.js',
 	'./js/Sidebar.js',
 	'./js/Sidebar.Scene.js',
-	'./js/Sidebar.Project.js',
+	'./js/Sidebar.W7X.js',
 	'./js/Sidebar.Settings.js',
 	'./js/Sidebar.Settings.Shortcuts.js',
 	'./js/Sidebar.Settings.Viewport.js',

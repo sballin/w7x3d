@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.Project = function ( editor ) {
+Sidebar.W7X = function ( editor ) {
 
 	var config = editor.config;
 	var signals = editor.signals;

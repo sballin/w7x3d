@@ -36,7 +36,7 @@ var Sidebar = function ( editor ) {
 	container.add( scene );
 
 	var project = new UI.Span().add(
-		new Sidebar.Project( editor )
+		new Sidebar.W7X( editor )
 	);
 	container.add( project );
 

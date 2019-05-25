@@ -254,8 +254,8 @@ var Strings = function ( config ) {
 			'sidebar/script/edit': 'Edit',
 			'sidebar/script/remove': 'Remove',
 
-			'sidebar/project': 'Project',
-			'sidebar/project/title': 'Title',
+			'sidebar/project': 'W7-X',
+			'sidebar/project/title': 'Scene Title',
 			'sidebar/project/editable': 'Editable',
 			'sidebar/project/vr': 'VR',
 			'sidebar/project/renderer': 'Renderer',

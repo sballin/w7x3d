@@ -45,7 +45,7 @@ import './unit/editor/Sidebar.Geometry.TorusKnotGeometry.tests';
 import './unit/editor/Sidebar.History.tests';
 import './unit/editor/Sidebar.Material.tests';
 import './unit/editor/Sidebar.Object.tests';
-import './unit/editor/Sidebar.Project.tests';
+import './unit/editor/Sidebar.W7X.tests';
 import './unit/editor/Sidebar.Properties.tests';
 import './unit/editor/Sidebar.Scene.tests';
 import './unit/editor/Sidebar.Script.tests';
