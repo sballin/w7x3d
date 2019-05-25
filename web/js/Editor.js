@@ -106,6 +106,15 @@ var Editor = function () {
 	this.viewportCamera = this.camera;
 
 	this.addCamera( this.camera );
+	
+	var skyColor = 0xc5e7ff;
+	var groundColor = 0x3f4952;
+	var intensity = 1;
+	var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
+	light.name = 'HemisphereLight';
+	light.position.set( 0, 0, 10 );
+
+	this.addObject( light );
 
 };
 
