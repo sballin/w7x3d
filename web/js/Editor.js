@@ -106,15 +106,6 @@ var Editor = function () {
 	this.viewportCamera = this.camera;
 
 	this.addCamera( this.camera );
-	
-	var skyColor = 0xc5e7ff;
-	var groundColor = 0x3f4952;
-	var intensity = 1;
-	var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
-	light.name = 'HemisphereLight';
-	light.position.set( 0, 0, 10 );
-
-	this.addObject( light );
 
 };
 
@@ -149,6 +140,19 @@ Editor.prototype = {
 			this.addObject( scene.children[ 0 ] );
 
 		}
+		
+		// Default light
+		
+		var skyColor = 0xc5e7ff;
+		var groundColor = 0x3f4952;
+		var intensity = 1;
+		var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
+		light.name = 'DefaultLight';
+		light.position.set( 0, 0, 10 );
+		if ( !this.scene.getObjectByName( light.name, true ) )
+			this.addObject( light );
+		
+		// Finish setting scene
 
 		this.signals.sceneGraphChanged.active = true;
 		this.signals.sceneGraphChanged.dispatch();
