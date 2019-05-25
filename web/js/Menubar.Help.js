@@ -25,7 +25,7 @@ Menubar.Help = function ( editor ) {
 	option.setTextContent( strings.getKey( 'menubar/help/source_code' ) );
 	option.onClick( function () {
 
-		window.open( 'https://github.com/mrdoob/three.js/tree/master/editor', '_blank' )
+		window.open( 'https://github.com/sballin/w7x3d', '_blank' )
 
 	} );
 	options.add( option );
@@ -37,7 +37,7 @@ Menubar.Help = function ( editor ) {
 	option.setTextContent( strings.getKey( 'menubar/help/about' ) );
 	option.onClick( function () {
 
-		window.open( 'http://threejs.org', '_blank' );
+		window.open( 'https://github.com/sballin/w7x3d/wiki', '_blank' );
 
 	} );
 	options.add( option );

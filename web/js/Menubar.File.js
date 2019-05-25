@@ -123,39 +123,39 @@ Menubar.File = function ( editor ) {
 	} );
 	options.add( option );
 
-	// Export Object
+	// // Export Object
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/object' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/object' ) );
+	// option.onClick( function () {
 
-		var object = editor.selected;
+	// 	var object = editor.selected;
 
-		if ( object === null ) {
+	// 	if ( object === null ) {
 
-			alert( 'No object selected' );
-			return;
+	// 		alert( 'No object selected' );
+	// 		return;
 
-		}
+	// 	}
 
-		var output = object.toJSON();
+	// 	var output = object.toJSON();
 
-		try {
+	// 	try {
 
-			output = JSON.stringify( output, parseNumber, '\t' );
-			output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
+	// 		output = JSON.stringify( output, parseNumber, '\t' );
+	// 		output = output.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
 
-		} catch ( e ) {
+	// 	} catch ( e ) {
 
-			output = JSON.stringify( output );
+	// 		output = JSON.stringify( output );
 
-		}
+	// 	}
 
-		saveString( output, 'model.json' );
+	// 	saveString( output, 'model.json' );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
 	// Export Scene
 
@@ -186,117 +186,117 @@ Menubar.File = function ( editor ) {
 
 	options.add( new UI.HorizontalRule() );
 
-	// Export DAE
+	// // Export DAE
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/dae' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/dae' ) );
+	// option.onClick( function () {
 
-		var exporter = new THREE.ColladaExporter();
+	// 	var exporter = new THREE.ColladaExporter();
 
-		exporter.parse( editor.scene, function ( result ) {
+	// 	exporter.parse( editor.scene, function ( result ) {
 
-			saveString( result.data, 'scene.dae' );
+	// 		saveString( result.data, 'scene.dae' );
 
-		} );
+	// 	} );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	// Export GLB
+	// // Export GLB
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/glb' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/glb' ) );
+	// option.onClick( function () {
 
-		var exporter = new THREE.GLTFExporter();
+	// 	var exporter = new THREE.GLTFExporter();
 
-		exporter.parse( editor.scene, function ( result ) {
+	// 	exporter.parse( editor.scene, function ( result ) {
 
-			saveArrayBuffer( result, 'scene.glb' );
+	// 		saveArrayBuffer( result, 'scene.glb' );
 
-			// forceIndices: true, forcePowerOfTwoTextures: true
-			// to allow compatibility with facebook
-		}, { binary: true, forceIndices: true, forcePowerOfTwoTextures: true } );
+	// 		// forceIndices: true, forcePowerOfTwoTextures: true
+	// 		// to allow compatibility with facebook
+	// 	}, { binary: true, forceIndices: true, forcePowerOfTwoTextures: true } );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	// Export GLTF
+	// // Export GLTF
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/gltf' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/gltf' ) );
+	// option.onClick( function () {
 
-		var exporter = new THREE.GLTFExporter();
+	// 	var exporter = new THREE.GLTFExporter();
 
-		exporter.parse( editor.scene, function ( result ) {
+	// 	exporter.parse( editor.scene, function ( result ) {
 
-			saveString( JSON.stringify( result, null, 2 ), 'scene.gltf' );
+	// 		saveString( JSON.stringify( result, null, 2 ), 'scene.gltf' );
 
-		} );
+	// 	} );
 
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	// Export OBJ
+	// // Export OBJ
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/obj' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/obj' ) );
+	// option.onClick( function () {
 
-		var object = editor.selected;
+	// 	var object = editor.selected;
 
-		if ( object === null ) {
+	// 	if ( object === null ) {
 
-			alert( 'No object selected.' );
-			return;
+	// 		alert( 'No object selected.' );
+	// 		return;
 
-		}
+	// 	}
 
-		var exporter = new THREE.OBJExporter();
+	// 	var exporter = new THREE.OBJExporter();
 
-		saveString( exporter.parse( object ), 'model.obj' );
+	// 	saveString( exporter.parse( object ), 'model.obj' );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	// Export STL (ASCII)
+	// // Export STL (ASCII)
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/stl' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/stl' ) );
+	// option.onClick( function () {
 
-		var exporter = new THREE.STLExporter();
+	// 	var exporter = new THREE.STLExporter();
 
-		saveString( exporter.parse( editor.scene ), 'model.stl' );
+	// 	saveString( exporter.parse( editor.scene ), 'model.stl' );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	// Export STL (Binary)
+	// // Export STL (Binary)
 
-	var option = new UI.Row();
-	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/file/export/stl_binary' ) );
-	option.onClick( function () {
+	// var option = new UI.Row();
+	// option.setClass( 'option' );
+	// option.setTextContent( strings.getKey( 'menubar/file/export/stl_binary' ) );
+	// option.onClick( function () {
 
-		var exporter = new THREE.STLExporter();
+	// 	var exporter = new THREE.STLExporter();
 
-		saveArrayBuffer( exporter.parse( editor.scene, { binary: true } ), 'model-binary.stl' );
+	// 	saveArrayBuffer( exporter.parse( editor.scene, { binary: true } ), 'model-binary.stl' );
 
-	} );
-	options.add( option );
+	// } );
+	// options.add( option );
 
-	//
+	// //
 
-	options.add( new UI.HorizontalRule() );
+	// options.add( new UI.HorizontalRule() );
 
 	// Publish
 

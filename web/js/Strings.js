@@ -11,17 +11,17 @@ var Strings = function ( config ) {
 		en: {
 
 			'menubar/file': 'File',
-			'menubar/file/new': 'New',
-			'menubar/file/import': 'Import',
-			'menubar/file/export/geometry': 'Export Geometry',
+			'menubar/file/new': 'New Scene',
+			'menubar/file/import': 'Import Scene JSON',
+			'menubar/file/export/geometry': 'Object to JSON',
 			'menubar/file/export/object': 'Export Object',
-			'menubar/file/export/scene': 'Export Scene',
+			'menubar/file/export/scene': 'Scene to JSON',
 			'menubar/file/export/dae': 'Export DAE',
 			'menubar/file/export/glb': 'Export GLB',
 			'menubar/file/export/gltf': 'Export GLTF',
 			'menubar/file/export/obj': 'Export OBJ',
 			'menubar/file/export/stl': 'Export STL',
-			'menubar/file/export/stl_binary': 'Export STL (Binary)',
+			'menubar/file/export/stl_binary': 'Scene to STL',
 			'menubar/file/publish': 'Publish',
 
 			'menubar/edit': 'Edit',
@@ -59,15 +59,15 @@ var Strings = function ( config ) {
 
 			'menubar/status/autosave': 'autosave',
 
-			'menubar/play': 'Play',
-			'menubar/play/stop': 'Stop',
-			'menubar/play/play': 'Play',
+			'menubar/play': 'Render',
+			'menubar/play/stop': 'Edit Scene',
+			'menubar/play/play': 'Render',
 
 			'menubar/examples': 'Examples',
 
 			'menubar/help': 'Help',
 			'menubar/help/source_code': 'Source Code',
-			'menubar/help/about': 'About',
+			'menubar/help/about': 'Help Wiki',
 
 			'sidebar/scene': 'Scene',
 			'sidebar/scene/background': 'Background',
