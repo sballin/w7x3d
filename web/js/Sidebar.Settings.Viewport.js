@@ -8,12 +8,13 @@ Sidebar.Settings.Viewport = function ( editor ) {
 	var strings = editor.strings;
 
 	var container = new UI.Div();
-	container.add( new UI.Break() );
 
 	container.add( new UI.Text( strings.getKey( 'sidebar/settings/viewport/grid' ) ).setWidth( '90px' ) );
 
 	var show = new UI.THREE.Boolean( true ).onChange( update );
 	container.add( show );
+	container.add( new UI.Break() );
+	container.add( new UI.Break() );
 
 	/*
 	var snapSize = new UI.Number( 25 ).setWidth( '40px' ).onChange( update );

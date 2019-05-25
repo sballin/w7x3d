@@ -86,6 +86,8 @@ Sidebar.Scene = function ( editor ) {
 		return '';
 
 	}
+	
+	// Outliner
 
 	var ignoreObjectSelectedSignal = false;
 
@@ -108,85 +110,67 @@ Sidebar.Scene = function ( editor ) {
 	container.add( outliner );
 	container.add( new UI.Break() );
 
-	// background
+	// // fog
 
-	function onBackgroundChanged() {
+	// function onFogChanged() {
 
-		signals.sceneBackgroundChanged.dispatch( backgroundColor.getHexValue() );
+	// 	signals.sceneFogChanged.dispatch(
+	// 		fogType.getValue(),
+	// 		fogColor.getHexValue(),
+	// 		fogNear.getValue(),
+	// 		fogFar.getValue(),
+	// 		fogDensity.getValue()
+	// 	);
 
-	}
+	// }
 
-	var backgroundRow = new UI.Row();
+	// var fogTypeRow = new UI.Row();
+	// var fogType = new UI.Select().setOptions( {
 
-	var backgroundColor = new UI.Color().setValue( '#ffffff' ).onChange( onBackgroundChanged );
-	backgroundColor.setValue( '#ffffff' );
+	// 	'None': 'None',
+	// 	'Fog': 'Linear',
+	// 	'FogExp2': 'Exponential'
 
-	backgroundRow.add( new UI.Text( strings.getKey( 'sidebar/scene/background' ) ).setWidth( '90px' ) );
-	backgroundRow.add( backgroundColor );
+	// } ).setWidth( '150px' );
+	// fogType.onChange( function () {
 
-	container.add( backgroundRow );
+	// 	onFogChanged();
+	// 	refreshFogUI();
 
-	// fog
+	// } );
 
-	function onFogChanged() {
+	// fogTypeRow.add( new UI.Text( strings.getKey( 'sidebar/scene/fog' ) ).setWidth( '90px' ) );
+	// fogTypeRow.add( fogType );
 
-		signals.sceneFogChanged.dispatch(
-			fogType.getValue(),
-			fogColor.getHexValue(),
-			fogNear.getValue(),
-			fogFar.getValue(),
-			fogDensity.getValue()
-		);
+	// container.add( fogTypeRow );
 
-	}
+	// // fog color
 
-	var fogTypeRow = new UI.Row();
-	var fogType = new UI.Select().setOptions( {
+	// var fogPropertiesRow = new UI.Row();
+	// fogPropertiesRow.setDisplay( 'none' );
+	// fogPropertiesRow.setMarginLeft( '90px' );
+	// container.add( fogPropertiesRow );
 
-		'None': 'None',
-		'Fog': 'Linear',
-		'FogExp2': 'Exponential'
+	// var fogColor = new UI.Color().setValue( '#ffffff' );
+	// fogColor.onChange( onFogChanged );
+	// fogPropertiesRow.add( fogColor );
 
-	} ).setWidth( '150px' );
-	fogType.onChange( function () {
+	// // fog near
 
-		onFogChanged();
-		refreshFogUI();
+	// var fogNear = new UI.Number( 0.1 ).setWidth( '40px' ).setRange( 0, Infinity ).onChange( onFogChanged );
+	// fogPropertiesRow.add( fogNear );
 
-	} );
+	// // fog far
 
-	fogTypeRow.add( new UI.Text( strings.getKey( 'sidebar/scene/fog' ) ).setWidth( '90px' ) );
-	fogTypeRow.add( fogType );
+	// var fogFar = new UI.Number( 50 ).setWidth( '40px' ).setRange( 0, Infinity ).onChange( onFogChanged );
+	// fogPropertiesRow.add( fogFar );
 
-	container.add( fogTypeRow );
+	// // fog density
 
-	// fog color
+	// var fogDensity = new UI.Number( 0.05 ).setWidth( '40px' ).setRange( 0, 0.1 ).setStep( 0.001 ).setPrecision( 3 ).onChange( onFogChanged );
+	// fogPropertiesRow.add( fogDensity );
 
-	var fogPropertiesRow = new UI.Row();
-	fogPropertiesRow.setDisplay( 'none' );
-	fogPropertiesRow.setMarginLeft( '90px' );
-	container.add( fogPropertiesRow );
-
-	var fogColor = new UI.Color().setValue( '#ffffff' );
-	fogColor.onChange( onFogChanged );
-	fogPropertiesRow.add( fogColor );
-
-	// fog near
-
-	var fogNear = new UI.Number( 0.1 ).setWidth( '40px' ).setRange( 0, Infinity ).onChange( onFogChanged );
-	fogPropertiesRow.add( fogNear );
-
-	// fog far
-
-	var fogFar = new UI.Number( 50 ).setWidth( '40px' ).setRange( 0, Infinity ).onChange( onFogChanged );
-	fogPropertiesRow.add( fogFar );
-
-	// fog density
-
-	var fogDensity = new UI.Number( 0.05 ).setWidth( '40px' ).setRange( 0, 0.1 ).setStep( 0.001 ).setPrecision( 3 ).onChange( onFogChanged );
-	fogPropertiesRow.add( fogDensity );
-
-	//
+	// //
 
 	function refreshUI() {
 
@@ -222,49 +206,43 @@ Sidebar.Scene = function ( editor ) {
 
 		}
 
-		if ( scene.background ) {
+		// if ( scene.fog ) {
 
-			backgroundColor.setHexValue( scene.background.getHex() );
+		// 	fogColor.setHexValue( scene.fog.color.getHex() );
 
-		}
+		// 	if ( scene.fog.isFog ) {
 
-		if ( scene.fog ) {
+		// 		fogType.setValue( "Fog" );
+		// 		fogNear.setValue( scene.fog.near );
+		// 		fogFar.setValue( scene.fog.far );
 
-			fogColor.setHexValue( scene.fog.color.getHex() );
+		// 	} else if ( scene.fog.isFogExp2 ) {
 
-			if ( scene.fog.isFog ) {
+		// 		fogType.setValue( "FogExp2" );
+		// 		fogDensity.setValue( scene.fog.density );
 
-				fogType.setValue( "Fog" );
-				fogNear.setValue( scene.fog.near );
-				fogFar.setValue( scene.fog.far );
+		// 	}
 
-			} else if ( scene.fog.isFogExp2 ) {
+		// } else {
 
-				fogType.setValue( "FogExp2" );
-				fogDensity.setValue( scene.fog.density );
+		// 	fogType.setValue( "None" );
 
-			}
+		// }
 
-		} else {
-
-			fogType.setValue( "None" );
-
-		}
-
-		refreshFogUI();
+		// refreshFogUI();
 
 	}
 
-	function refreshFogUI() {
+	// function refreshFogUI() {
 
-		var type = fogType.getValue();
+	// 	var type = fogType.getValue();
 
-		fogPropertiesRow.setDisplay( type === 'None' ? 'none' : '' );
-		fogNear.setDisplay( type === 'Fog' ? '' : 'none' );
-		fogFar.setDisplay( type === 'Fog' ? '' : 'none' );
-		fogDensity.setDisplay( type === 'FogExp2' ? '' : 'none' );
+	// 	fogPropertiesRow.setDisplay( type === 'None' ? 'none' : '' );
+	// 	fogNear.setDisplay( type === 'Fog' ? '' : 'none' );
+	// 	fogFar.setDisplay( type === 'Fog' ? '' : 'none' );
+	// 	fogDensity.setDisplay( type === 'FogExp2' ? '' : 'none' );
 
-	}
+	// }
 
 	refreshUI();
 

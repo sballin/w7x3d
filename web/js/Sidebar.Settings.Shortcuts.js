@@ -18,7 +18,7 @@ Sidebar.Settings.Shortcuts = function ( editor ) {
 	var signals = editor.signals;
 
 	var container = new UI.Div();
-	container.add( new UI.Break() );
+	// container.add( new UI.Break() );
 
 	var shortcuts = [ 'translate', 'rotate', 'scale', 'undo', 'focus' ];
 
@@ -81,15 +81,15 @@ Sidebar.Settings.Shortcuts = function ( editor ) {
 		shortcutRow.add( new UI.Text( strings.getKey( 'sidebar/settings/shortcuts/' + name ) ).setTextTransform( 'capitalize' ).setWidth( '90px' ) );
 		shortcutRow.add( shortcutInput );
 
-		container.add( shortcutRow );
+		// container.add( shortcutRow );
 
 	}
 
-	for ( var i = 0; i < shortcuts.length; i ++ ) {
+	// for ( var i = 0; i < shortcuts.length; i ++ ) {
 
-		createShortcutInput( shortcuts[ i ] );
+	// 	createShortcutInput( shortcuts[ i ] );
 
-	}
+	// }
 
 	document.addEventListener( 'keydown', function ( event ) {
 
