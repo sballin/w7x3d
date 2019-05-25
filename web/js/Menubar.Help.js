@@ -30,7 +30,7 @@ Menubar.Help = function ( editor ) {
 	} );
 	options.add( option );
 
-	// About
+	// Help wiki
 
 	var option = new UI.Row();
 	option.setClass( 'option' );
@@ -38,6 +38,18 @@ Menubar.Help = function ( editor ) {
 	option.onClick( function () {
 
 		window.open( 'https://github.com/sballin/w7x3d/wiki', '_blank' );
+
+	} );
+	options.add( option );
+	
+	// Contact
+
+	var option = new UI.Row();
+	option.setClass( 'option' );
+	option.setTextContent( strings.getKey( 'menubar/help/contact' ) );
+	option.onClick( function () {
+
+		window.open( 'mailto:sballin@mit.edu', '_blank' );
 
 	} );
 	options.add( option );
