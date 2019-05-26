@@ -147,7 +147,7 @@ Editor.prototype = {
 		var groundColor = 0x3f4952;
 		var intensity = 1;
 		var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
-		light.name = 'DefaultLight';
+		light.name = 'GlobalLight';
 		light.position.set( 0, 0, 10 );
 		if ( !this.scene.getObjectByName( light.name, true ) )
 			this.addObject( light );
