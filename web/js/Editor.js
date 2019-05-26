@@ -6,7 +6,6 @@ var Editor = function () {
 
 	this.DEFAULT_CAMERA = new THREE.PerspectiveCamera( 50, 1, 0.01, 1000 );
 	this.DEFAULT_CAMERA.name = 'Camera';
-	// this.DEFAULT_CAMERA.up = new THREE.Vector3(0, 0, 1);
 	this.DEFAULT_CAMERA.position.set( 0, 5, 10 );
 	this.DEFAULT_CAMERA.lookAt( new THREE.Vector3() );
 
@@ -106,7 +105,7 @@ var Editor = function () {
 	this.viewportCamera = this.camera;
 
 	this.addCamera( this.camera );
-
+	
 };
 
 Editor.prototype = {
@@ -141,22 +140,29 @@ Editor.prototype = {
 
 		}
 		
-		// Default light
-		
-		var skyColor = 0xc5e7ff;
-		var groundColor = 0x3f4952;
-		var intensity = 1;
-		var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
-		light.name = 'GlobalLight';
-		light.position.set( 0, 0, 10 );
-		if ( !this.scene.getObjectByName( light.name, true ) )
-			this.addObject( light );
-		
 		// Finish setting scene
 
 		this.signals.sceneGraphChanged.active = true;
 		this.signals.sceneGraphChanged.dispatch();
-
+		
+		this.addDefaults();
+		
+	},
+	
+	//
+	
+	addDefaults: function () {
+		if ( !this.scene.getObjectByName( 'GlobalLight', true ) ) {
+			
+			var skyColor = 0xc5e7ff;
+			var groundColor = 0x3f4952;
+			var intensity = 1;
+			var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
+			light.name = 'GlobalLight';
+			light.position.set( 0, 0, 10 );
+			this.addObject( light );
+			
+		}
 	},
 
 	//
@@ -539,15 +545,16 @@ Editor.prototype = {
 		this.mixer.stopAllAction();
 
 		this.deselect();
-
+		
 		this.signals.editorCleared.dispatch();
+		
+		this.addDefaults();
 
 	},
 
 	//
 
 	fromJSON: function ( json ) {
-
 		var loader = new THREE.ObjectLoader();
 
 		// backwards

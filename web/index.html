@@ -171,7 +171,7 @@
 		<script src="js/commands/SetSceneCommand.js"></script>
 
 		<script>
-
+			
 			window.URL = window.URL || window.webkitURL;
 			window.BlobBuilder = window.BlobBuilder || window.WebKitBlobBuilder || window.MozBlobBuilder;
 
@@ -200,13 +200,11 @@
 
 			var menubar = new Menubar( editor );
 			document.body.appendChild( menubar.dom );
-
-			//
-
+			
 			editor.setTheme( editor.config.getKey( 'theme' ) );
 
 			editor.storage.init( function () {
-
+				
 				editor.storage.get( function ( state ) {
 
 					if ( isLoadingFromHash ) return;
@@ -215,6 +213,11 @@
 
 						editor.fromJSON( state );
 
+					}
+					else {
+						
+						editor.addDefaults();
+						
 					}
 
 					var selected = editor.config.getKey( 'selected' );
@@ -226,7 +229,7 @@
 					}
 
 				} );
-
+				
 				//
 
 				var timeout;
