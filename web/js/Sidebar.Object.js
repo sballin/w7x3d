@@ -279,20 +279,20 @@ Sidebar.Object = function ( editor ) {
 
 	// shadow
 
-	var objectShadowRow = new UI.Row();
+	// var objectShadowRow = new UI.Row();
 
-	objectShadowRow.add( new UI.Text( strings.getKey( 'sidebar/object/shadow' ) ).setWidth( '90px' ) );
+	// objectShadowRow.add( new UI.Text( strings.getKey( 'sidebar/object/shadow' ) ).setWidth( '90px' ) );
 
 	var objectCastShadow = new UI.THREE.Boolean( false, strings.getKey( 'sidebar/object/cast' ) ).onChange( update );
-	objectShadowRow.add( objectCastShadow );
+	// objectShadowRow.add( objectCastShadow );
 
 	var objectReceiveShadow = new UI.THREE.Boolean( false, strings.getKey( 'sidebar/object/receive' ) ).onChange( update );
-	objectShadowRow.add( objectReceiveShadow );
+	// objectShadowRow.add( objectReceiveShadow );
 
 	var objectShadowRadius = new UI.Number( 1 ).onChange( update );
-	objectShadowRow.add( objectShadowRadius );
+	// objectShadowRow.add( objectShadowRadius );
 
-	container.add( objectShadowRow );
+	// container.add( objectShadowRow );
 
 	// visible
 
@@ -610,9 +610,9 @@ Sidebar.Object = function ( editor ) {
 			'angle': objectAngleRow,
 			'penumbra': objectPenumbraRow,
 			'decay': objectDecayRow,
-			'castShadow': objectShadowRow,
-			'receiveShadow': objectReceiveShadow,
-			'shadow': objectShadowRadius
+			// 'castShadow': objectShadowRow,
+			// 'receiveShadow': objectReceiveShadow,
+			// 'shadow': objectShadowRadius
 		};
 
 		for ( var property in properties ) {

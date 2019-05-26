@@ -235,7 +235,9 @@ Sidebar.Settings = function ( editor ) {
 		updateRenderer();
 
 	} );
-	rendererTypeRow.add( rendererShadows );
+	config.setKey( 'project/renderer/shadows', false );
+	updateRenderer();
+	// rendererTypeRow.add( rendererShadows );
 
 	// container.add( rendererPropertiesRow );
 
