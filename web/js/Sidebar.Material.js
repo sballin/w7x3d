@@ -78,20 +78,20 @@ Sidebar.Material = function ( editor ) {
 	var materialClass = new UI.Select().setOptions( {
 
 		'LineBasicMaterial': 'LineBasicMaterial',
-		'LineDashedMaterial': 'LineDashedMaterial',
+		// 'LineDashedMaterial': 'LineDashedMaterial',
 		'MeshBasicMaterial': 'MeshBasicMaterial',
-		'MeshDepthMaterial': 'MeshDepthMaterial',
-		'MeshNormalMaterial': 'MeshNormalMaterial',
-		'MeshLambertMaterial': 'MeshLambertMaterial',
-		'MeshMatcapMaterial': 'MeshMatcapMaterial',
-		'MeshPhongMaterial': 'MeshPhongMaterial',
-		'MeshToonMaterial': 'MeshToonMaterial',
+		// 'MeshDepthMaterial': 'MeshDepthMaterial',
+		// 'MeshNormalMaterial': 'MeshNormalMaterial',
+		// 'MeshLambertMaterial': 'MeshLambertMaterial',
+		// 'MeshMatcapMaterial': 'MeshMatcapMaterial',
+		// 'MeshPhongMaterial': 'MeshPhongMaterial',
+		// 'MeshToonMaterial': 'MeshToonMaterial',
 		'MeshStandardMaterial': 'MeshStandardMaterial',
-		'MeshPhysicalMaterial': 'MeshPhysicalMaterial',
-		'RawShaderMaterial': 'RawShaderMaterial',
-		'ShaderMaterial': 'ShaderMaterial',
-		'ShadowMaterial': 'ShadowMaterial',
-		'SpriteMaterial': 'SpriteMaterial'
+		// 'MeshPhysicalMaterial': 'MeshPhysicalMaterial',
+		// 'RawShaderMaterial': 'RawShaderMaterial',
+		// 'ShaderMaterial': 'ShaderMaterial',
+		// 'ShadowMaterial': 'ShadowMaterial',
+		// 'SpriteMaterial': 'SpriteMaterial'
 
 	} ).setWidth( '150px' ).setFontSize( '12px' ).onChange( update );
 
