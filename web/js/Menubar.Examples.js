@@ -21,8 +21,8 @@ Menubar.Examples = function ( editor ) {
 	// Examples
 
 	var items = [
-		{ title: 'Camera', file: 'camera.app.json' },
-		{ title: 'Shaders', file: 'shaders.app.json' }
+		{ title: 'Shapes', file: 'camera.app.json' },
+		// { title: 'Shaders', file: 'shaders.app.json' }
 	];
 
 	var loader = new THREE.FileLoader();
