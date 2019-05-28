@@ -15,7 +15,7 @@ var Sidebar = function ( editor ) {
 	sceneTab.onClick( function () { select( 'SCENE' ) } );
 
 	var projectTab = new UI.Text( strings.getKey( 'sidebar/project' ) ).setTextTransform( 'uppercase' );
-	projectTab.onClick( function () { select( 'PROJECT' ) } );
+	projectTab.onClick( function () { select( 'W7-X' ) } );
 
 	var settingsTab = new UI.Text( strings.getKey( 'sidebar/settings' ) ).setTextTransform( 'uppercase' );
 	settingsTab.onClick( function () { select( 'SETTINGS' ) } );
@@ -63,7 +63,7 @@ var Sidebar = function ( editor ) {
 				sceneTab.setClass( 'selected' );
 				scene.setDisplay( '' );
 				break;
-			case 'PROJECT':
+			case 'W7-X':
 				projectTab.setClass( 'selected' );
 				project.setDisplay( '' );
 				break;
