@@ -25,6 +25,10 @@ Menubar.Status = function ( editor ) {
 
 	} );
 	container.add( autosave );
+	
+	// Disabled by default
+	autosave.setValue(false);
+	editor.config.setKey( 'autosave', false );
 
 	editor.signals.savingStarted.add( function () {
 
