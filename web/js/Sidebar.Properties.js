@@ -10,13 +10,13 @@ Sidebar.Properties = function ( editor ) {
 	var container = new UI.Span();
 
 	var objectTab = new UI.Text( strings.getKey( 'sidebar/properties/object' ) ).setTextTransform( 'uppercase' );
-	objectTab.onClick( function () { select( 'OBJECT' ) } );
+	objectTab.onClick( function () { select( 'OBJECT' ); } );
 
 	var geometryTab = new UI.Text( strings.getKey( 'sidebar/properties/geometry' ) ).setTextTransform( 'uppercase' );
-	geometryTab.onClick( function () { select( 'GEOMETRY' ) } );
+	geometryTab.onClick( function () { select( 'GEOMETRY' ); } );
 
 	var materialTab = new UI.Text( strings.getKey( 'sidebar/properties/material' ) ).setTextTransform( 'uppercase' );
-	materialTab.onClick( function () { select( 'MATERIAL' ) } );
+	materialTab.onClick( function () { select( 'MATERIAL' ); } );
 
 	var tabs = new UI.Div();
 	tabs.setId( 'tabs' );

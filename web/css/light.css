@@ -1,4 +1,4 @@
-button {
+button, a.ObjectButton {
 	color: #555;
 	background-color: #ddd;
 	border: 0px;
@@ -8,11 +8,11 @@ button {
 	outline: none;
 }
 
-	button:hover {
+	button:hover, a.ObjectButton:hover {
 		background-color: #fff;
 	}
 
-	button.selected {
+	button.selected, a.ObjectButton.selected {
 		background-color: #fff;
 	}
 
@@ -176,6 +176,44 @@ select {
 		min-height: 20px;
 		margin-bottom: 10px;
 	}
+	
+	#sidebar .ComponentsList {
+		display: inline-block;
+		overflow: auto;
+		overflow-y: auto;
+		height: 300px;
+	}
+	
+	#sidebar .ObjectButton {
+		display: inline-block;
+		vertical-align: middle;
+		line-height: 1.4;
+		cursor: pointer;
+		width: 96%;
+		height: 100%;
+		padding: 5px;
+		padding-bottom: 3px;
+		text-align: left;
+		font-size: 0.9em;
+	}
+
+	#sidebar .ObjectButtonTitle, .ObjectButtonSubtitle, .ObjectButtonDescription {
+		display: inline-block;
+		width: 100%;
+		vertical-align: middle;
+		font-weight: bold;
+	}
+	
+	#sidebar .ObjectButtonSubtitle {
+		font-weight: normal;
+	}
+	
+	#sidebar .ObjectButtonDescription {
+		text-transform: none;
+		font-weight: normal;
+		color: #777777;
+	}
+	
 
 #tabs {
 	background-color: #ddd;
@@ -223,7 +261,7 @@ select {
 	background-color: #fff;
 	padding: 0;
 	width: 100%;
-	height: 140px;
+	height: 250px;
 	font-size: 12px;
 	cursor: default;
 	overflow: auto;

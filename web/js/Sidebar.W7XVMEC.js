@@ -2,17 +2,17 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.W7X = function ( editor ) {
+Sidebar.W7XVMEC = function ( editor ) {
 
-	var config = editor.config;
-	var signals = editor.signals;
 	var strings = editor.strings;
-	
+
+	var signals = editor.signals;
+
 	var container = new UI.Panel();
 	container.setBorderTop( '0' );
 	container.setPaddingTop( '20px' );
 	container.setDisplay( 'none' );
-	
+
 	return container;
 
 };

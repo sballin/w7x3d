@@ -231,7 +231,7 @@ Menubar.Add = function ( editor ) {
 		var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
 		light.name = 'GlobalLight';
 
-		light.position.set( 0, 0, 10 );
+		light.position.set( 0, 0, 20 );
 
 		editor.execute( new AddObjectCommand( light ) );
 

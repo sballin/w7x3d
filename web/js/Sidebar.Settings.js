@@ -271,6 +271,34 @@ Sidebar.Settings = function ( editor ) {
 	container.add( new Sidebar.Settings.Shortcuts( editor ) ); // doesn't add UI element but establishes shortcuts
 	// container.add( new Sidebar.Settings.Viewport( editor ) ); // moved to sidebar Scene tab
 
+	// // Editable
+
+	// var editableRow = new UI.Row();
+	// var editable = new UI.Checkbox( config.getKey( 'project/editable' ) ).setLeft( '100px' ).onChange( function () {
+
+	// 	config.setKey( 'project/editable', this.getValue() );
+
+	// } );
+
+	// editableRow.add( new UI.Text( strings.getKey( 'sidebar/project/editable' ) ).setWidth( '90px' ) );
+	// editableRow.add( editable );
+
+	// container.add( editableRow );
+
+	// // VR
+
+	// var vrRow = new UI.Row();
+	// var vr = new UI.Checkbox( config.getKey( 'project/vr' ) ).setLeft( '100px' ).onChange( function () {
+
+	// 	config.setKey( 'project/vr', this.getValue() );
+
+	// } );
+
+	// vrRow.add( new UI.Text( strings.getKey( 'sidebar/project/vr' ) ).setWidth( '90px' ) );
+	// vrRow.add( vr );
+
+	// container.add( vrRow );
+
 	return container;
 
 };

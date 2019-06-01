@@ -1,0 +1,381 @@
+<!--
+    Download model from web services
+    Display it
+    Save as binary STL
+    For multi-component parts, save individual components AND groups separately
+-->
+
+<html>
+
+<head>
+    <title>w7xplorer</title>
+    <meta charset="utf-8">
+    <style>
+    body {
+        margin: 0;
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    h4, p {
+        color: white;
+        text-align: left;
+    }
+    </style>
+    <script src="../js/three.min.js"></script>
+    <script src="../js/loaders/STLLoader.js"></script>
+    <script src="../js/controls/OrbitControls.js"></script>
+    <script src="../js/exporters/STLExporter.js"></script>
+    <script src="../js/exporters/GLTFExporter.js"></script>
+</head>
+
+<body>
+    <script>
+    // Initialize scene and renderer
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 1e5);
+    camera.up = new THREE.Vector3(0, 0, 1);
+    camera.position.setX(0).setY(0).setZ(9);
+    camera.setFocalLength(11.057);
+    var renderer = new THREE.WebGLRenderer(
+    {
+        antialias: true,
+        alpha: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+    renderer.sortObjects = false;
+    document.body.appendChild(renderer.domElement);
+
+    // Browser camera controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 1;
+    controls.enableZoom = true;
+    controls.maxDistance = 20;
+    controls.minDistance = 0.1;
+
+    // Basic lights
+    var ambientLight = new THREE.AmbientLight(0xffffff);
+    scene.add(ambientLight);
+    var pointLight = new THREE.PointLight(0xffffff);
+    pointLight.position.set(0, 0, 100);
+    pointLight.shadowMapVisible = true;
+    scene.add(pointLight);
+
+    // var LCFSDict = {};
+    // var LCFSr, LCFSz, LCFSphi;
+    // var key;
+    // var currentConfig = 'A_standard_beta-0';
+    // fetch('assets/lcfs/A_standard_beta-0.json').then(response => response.json()).then(json => LCFSDict[currentConfig] = plotLCFS(json));
+    var numComponents;
+    var componentCount = 0;
+    // addDivertor();
+    var assembliesInfo;
+    var assemblyCount = 0;
+    downloadAssemblies();
+    
+    var closestLCFSpoint;
+    var closestLCFSpointSphere;
+    var Bdirection;
+    var Bline;
+    var chord;
+    var chordLength;
+    var angleWithBdeg;
+
+    var configDict = {
+        'A_standard_beta-0': '1000_1000_1000_1000_+0000_+0000/01/00jh_l/',
+        'A_standard_beta-0.056': '1000_1000_1000_1000_+0000_+0000/01/32/',
+        'B-low-iota_beta-0': '1000_1000_1000_1000_+0750_+0750/01/00/',
+        'B_low-iota_beta-0.021': '1000_1000_1000_1000_+0750_+0750/01/10ss/',
+        'C_high-iota_beta-0': '1000_1000_1000_1000_-0690_-0690/01/00/',
+        'C_high-iota_beta-0.021': '1000_1000_1000_1000_-0690_-0690/01/10s/',
+        'D_low-mirror_beta-0': '1042_1042_1127_1127_+0000_+0000/01/00/',
+        'D_low-mirror_beta-0.043': '1042_1042_1127_1127_+0000_+0000/01/20/',
+        'E_high-mirror_beta-0': '0972_0926_0880_0852_+0000_+0000/01/00jh/',
+        'E_high-mirror_beta-0.053': '0972_0926_0880_0852_+0000_+0000/01/24a/'
+    };
+
+    var render = function()
+    {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    };
+
+    render();
+
+    function addDivertor()
+    {
+        var ids = [170, 171, 172, 173, 174, 175, 176, 177, 178, 179, 180, 181, 182, 183, 184, 185, 186, 187, 188, 189, 190, 191, 192, 193, 194, 195, 196, 197, 198, 199, 200, 201, 202, 203, 204, 205, 206, 207, 208, 209, 210, 211, 212, 213, 214, 215, 216, 217, 218, 219, 220, 221, 222, 223, 224, 225, 226, 227, 228, 229, 230, 231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246, 247, 248, 249, 250, 251, 252, 253, 254, 255, 256, 257, 258, 259, 260, 261, 262, 263, 264, 265, 266, 267, 268, 269, 270, 271, 272, 273, 274, 275, 276, 277, 278, 279, 280, 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295, 296, 297, 298, 299, 300, 301, 302, 303, 304, 305, 306, 307, 308, 309];
+        // Add components saved to disk
+        // for (var idi in ids)
+        //     fetch('assets/divertor/' + ids[idi] + '.json').then(response => response.json()).then(json => addComponent(json));
+        // Add components from webservice
+        numComponents = ids.length;
+        for (var idi in ids)
+            addComponentById(ids[idi]);
+    }
+
+    function addComponent(json)
+    {
+        var data = json.surfaceMesh;
+        var vec = [];
+        var faces = [];
+
+        for (var i = 0; i < data.nodes.x1.length; i++)
+            vec.push(new THREE.Vector3(data.nodes.x1[i], data.nodes.x2[i], data.nodes.x3[i]));
+
+        if (data.numVertices[0] == 3)
+        {
+            for (var i = 0; i < data.polygons.length; i++)
+                faces.push(new THREE.Face3(data.polygons[i++] - 1, data.polygons[i++] - 1, data.polygons[i] - 1));
+        }
+        else
+        {
+            for (var i = 0; i < data.polygons.length; i++)
+            {
+                v1 = data.polygons[i++] - 1;
+                v2 = data.polygons[i++] - 1;
+                v3 = data.polygons[i++] - 1;
+                v4 = data.polygons[i] - 1;
+                faces.push(new THREE.Face3(v1, v2, v3));
+                faces.push(new THREE.Face3(v1, v3, v4));
+            }
+        }
+
+        var geometry4 = new THREE.Geometry();
+        geometry4.vertices = vec;
+        geometry4.faces = faces;
+        geometry4.computeFaceNormals();
+
+        var material3 = new THREE.MeshStandardMaterial(
+        {
+            color: 0x666666,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.7,
+            flatShading: false,
+            metalness: 0.5,
+            roughness: 0.5
+        });
+        var line4 = new THREE.Mesh(geometry4, material3);
+        //line4.name = id.toString();
+        scene.add(line4);
+        var vec = geometry4.vertices[0];
+        // addLabel(id.toString(), vec.x,vec.y, vec.z);
+    }
+    
+    function downloadAssemblies() {
+        /* Get list of assemblies of which we will download the components for consolidated models */
+        
+        fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/assemblies').then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => {
+            assembliesInfo = json;
+            downloadAssemblyById(0); 
+        });
+    }
+    
+    function downloadAssemblyById(id) {
+        var subids = assembliesInfo[id].subids;
+        console.log(assembliesInfo[id].name, subids);
+        numComponents = subids.length;
+        componentCount = 0;
+        for (var idi in subids)
+            addComponentById(subids[idi], id);
+    }
+
+    function addComponentById(id, assemblyName) {
+        var compID = 'Component_' + id;
+        var material3 = new THREE.MeshLambertMaterial(
+        {
+            color: 0x555555,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/component/' + id + '/data').then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => addMesh(json, assemblyName));
+        
+        function addMesh(json, assemblyName) {
+            var data = json.surfaceMesh;
+
+            if (data == undefined)
+                data = json.volumeMesh.faces;
+
+            var vec = [];
+            var faces = [];
+
+            for (var i = 0; i < data.nodes.x1.length; i++)
+                vec.push(new THREE.Vector3(data.nodes.x1[i], data.nodes.x2[i], data.nodes.x3[i]));
+
+            if (data.numVertices[0] == 3)
+            {
+                for (var i = 0; i < data.polygons.length; i++)
+                    faces.push(new THREE.Face3(data.polygons[i++] - 1, data.polygons[i++] - 1, data.polygons[i] - 1));
+            }
+            else
+            {
+                for (var i = 0; i < data.polygons.length; i++)
+                {
+                    v1 = data.polygons[i++] - 1;
+                    v2 = data.polygons[i++] - 1;
+                    v3 = data.polygons[i++] - 1;
+                    v4 = data.polygons[i] - 1;
+                    faces.push(new THREE.Face3(v1, v2, v3));
+                    faces.push(new THREE.Face3(v1, v3, v4));
+                }
+            }
+
+            var geometry4 = new THREE.Geometry();
+            geometry4.vertices = vec;
+            geometry4.faces = faces;
+            geometry4.computeFaceNormals();
+
+            var line4 = new THREE.Mesh(geometry4, material3);
+            line4.name = compID;
+            scene.add(line4);
+            var vec = geometry4.vertices[0];
+            // addLabel(id.toString(), vec.x, vec.y, vec.z);
+            // var lineEdges = new THREE.EdgesHelper(line4, 0x999999);
+            // scene.add(lineEdges);
+            
+            // Save after last component is loaded
+            componentCount += 1;
+            if (componentCount == numComponents) {
+
+                var exporter = new THREE.STLExporter();
+                saveArrayBuffer( exporter.parse( scene, { binary: true } ), assemblyName + '.stl' );
+                setTimeout(clearScene, 3000);
+                setTimeout(nextAssembly, 5000);
+                
+            }
+            
+            
+        }
+        
+    }
+    
+    function clearScene() {
+        // Clear scene
+        while (scene.children.length > 0)
+            scene.remove(scene.children[0]); 
+    }
+    
+    function nextAssembly() {
+        assemblyCount += 1;
+        if (assemblyCount <= assembliesInfo.length)
+            downloadAssemblyById(assemblyCount);
+    }
+    
+    function saveString( text, filename ) {
+
+        save( new Blob( [ text ], { type: 'text/plain' } ), filename );
+
+    }
+    
+    function saveArrayBuffer( buffer, filename ) {
+        
+        save( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
+        
+    }
+        
+    var link = document.createElement( 'a' );
+    function save( blob, filename ) {
+
+        link.href = URL.createObjectURL( blob );
+        link.download = filename || 'data.json';
+        link.dispatchEvent( new MouseEvent( 'click' ) );
+
+        // URL.revokeObjectURL( url ); breaks Firefox...
+
+    }
+
+    function updateLCFS(json)
+    {
+        LCFSDict[currentConfig].visible = false;
+        LCFSDict[json.name] = plotLCFS(json);
+        currentConfig = json.name;
+    }
+
+    function plotLCFS(input)
+    {
+        var LCFS = new THREE.Object3D();
+        LCFS.points = [];
+        var mat = new THREE.LineBasicMaterial(
+        {
+            linewidth: 1,
+            color: 0x0000ff,
+            transparent: true,
+            opacity: 0.7
+        });
+        var lcfs_x = Array(80 * 252);
+        var lcfs_y = Array(80 * 252);
+        var lcfs_z = input.z;
+        for (i = 0; i < 252; i++)
+        {
+            var geom = new THREE.Geometry();
+            for (j = 0; j < 80; j++)
+            {
+                lcfs_x[i * 80 + j] = input.r[i * 80 + j] * Math.cos(input.phi[i]);
+                lcfs_y[i * 80 + j] = input.r[i * 80 + j] * Math.sin(input.phi[i]);
+                geom.vertices.push(new THREE.Vector3(lcfs_x[i * 80 + j], lcfs_y[i * 80 + j], lcfs_z[i * 80 + j]));
+                LCFS.points.push([lcfs_x[i * 80 + j], lcfs_y[i * 80 + j], lcfs_z[i * 80 + j]]);
+            }
+            //if (i % 25 == 0)
+            //    LCFS.add(new THREE.Line(geom, mat, THREE.LineSegments));
+        }
+        for (i = 0; i < 79; i++)
+        {
+            var geom = new THREE.Geometry();
+            for (j = 0; j < 252; j++)
+                geom.vertices.push(new THREE.Vector3(lcfs_x[i + j * 80], lcfs_y[i + j * 80], lcfs_z[i + j * 80]));
+            geom.vertices.push(new THREE.Vector3(lcfs_x[i], lcfs_y[i], lcfs_z[i]));
+            // LCFS.add(new THREE.Line(geom, mat, THREE.LineSegments));
+        }
+        LCFSr = input.r;
+        LCFSz = input.z;
+        LCFSphi = input.phi;
+        var geometry = new THREE.ParametricGeometry(parametricLCFS, 252, 80);
+        var material = new THREE.MeshPhongMaterial(
+        {color: 0x156289, emissive: 0x072534,
+                                                transparent: true, opacity: 0.8});
+        LCFS.add(new THREE.Mesh(geometry, material));
+        scene.add(LCFS);
+        return LCFS;
+    }
+
+    function parametricLCFS(u, v)
+    {
+        u = (u * 252) % 252;
+        v = (v * 80) % 80;
+        var r = LCFSr[v + u * 80];
+        var z = LCFSz[v + u * 80];
+        var phi = LCFSphi[u];
+        return new THREE.Vector3(r * Math.cos(phi), r * Math.sin(phi), z);
+    }
+
+    function addSTL(filename)
+    {
+        var loader = new THREE.STLLoader();
+        loader.load(filename, function(geometry)
+        {
+            var STLMaterial = new THREE.MeshPhongMaterial(
+            {
+                color: 0x888888,
+                specular: 0xfff,
+                shininess: 50,
+                side: THREE.DoubleSide
+            });
+            var STL = new THREE.Mesh(geometry, STLMaterial);
+            STL.scale.set(0.001, 0.001, 0.001);
+            STL.castShadow = true;
+            STL.receiveShadow = true;
+            scene.add(STL);
+        });
+    }
+    </script>
+</body>
+
+</html>
