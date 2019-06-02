@@ -43,8 +43,9 @@ Sidebar.W7XModels = function ( editor ) {
 			addComponentsToSidebar(componentsInfo);
 		}
 		else if (category == 'Coils') {
-			addCoilsToSidebar(coilsInfo);
+			addCoilsToSidebar(configsInfo);
 		}
+		searchInput.setValue('');
 	} );
 	categorySelect.setValue('Assemblies');
 	categoryRow.add(categorySelect);
@@ -69,7 +70,7 @@ Sidebar.W7XModels = function ( editor ) {
 			var addingFunction = addComponentsToSidebar;
 		}
 		else if (categorySelect.getValue() == 'Coils') {
-			var info = coilsInfo;
+			var info = configsInfo;
 			var addingFunction = addCoilsToSidebar;
 		}
 		
@@ -106,6 +107,9 @@ Sidebar.W7XModels = function ( editor ) {
 	var assembliesInfoUrl = 'http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/assemblies';
     fetch(assembliesInfoUrl).then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => {
         assembliesInfo = json;
+        for (var i in assembliesInfo) {
+        	assembliesInfo[i].databaseID = i;
+        }
         addAssembliesToSidebar(assembliesInfo); 
     });
     
@@ -113,45 +117,68 @@ Sidebar.W7XModels = function ( editor ) {
     var componentsInfoUrl = 'http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/components';
     fetch(componentsInfoUrl).then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => {
         componentsInfo = json;
+        for (var i in componentsInfo) {
+        	componentsInfo[i].databaseID = i; 
+        }
     });
     
-    var coilsInfo;
+    var configsInfo;
     var coilsInfoUrl = 'http://esb.ipp-hgw.mpg.de:8280/services/CoilsDBRest/configs';
     fetch(coilsInfoUrl).then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => {
-        coilsInfo = json;
+        configsInfo = json;
+        for (var i in configsInfo) {
+        	configsInfo[i].databaseID = i;
+        }
     });
 	
 	function addAssembliesToSidebar(info) {
 		for (var i = 0; i < info.length; i++) {
+			var objectInfo = {};
+			objectInfo.title = info[i].name;
+			objectInfo.subtitle = info[i].machine + ' assembly #' + info[i].databaseID +
+			                      ' (' + info[i].subids.length + ' components)';
+			objectInfo.description = info[i].comment.replace('Copied to new database (ComponentsDB2)', '');
+			objectInfo.outlinerTitle = info[i].name + ' (assembly #' + info[i].databaseID + ')';
+			objectInfo.subids = info[i].subids;
+			objectInfo.addToSceneFunction = addAssembly;
+			
+			var objectButton = new UI.ObjectButton(objectInfo);
 			var row = new UI.Row();
-			var title = info[i].name;
-			var subtitle = info[i].machine + ' assembly #' + i + ' (' + info[i].subids.length + ' components)';
-			var subids = info[i].subids;
-			var objectInfo = new UI.ObjectButton('assembly', title, subtitle, info, i, addAssembly );
-			row.add(objectInfo);
+			row.add(objectButton);
 			objectsList.add(row);
 		}
 	}
 	
 	function addComponentsToSidebar(info) {
 		for (var i = 0; i < info.length; i++) {
+			var objectInfo = {};
+			objectInfo.title = info[i].name;
+			objectInfo.subtitle = info[i].machine + ' component #' + info[i].databaseID;
+			objectInfo.description = info[i].comment.replace('Copied to new database (ComponentsDB2)', '');
+			objectInfo.outlinerTitle = info[i].name + ' (component #' + info[i].databaseID + ')';
+			objectInfo.subids = [info[i].databaseID];
+			objectInfo.addToSceneFunction = addSingleComponent;
+			
 			var row = new UI.Row();
-			var title = info[i].name;
-			var subtitle = info[i].machine + ' component #' + i;
-			var objectInfo = new UI.ObjectButton('component', title, subtitle, info, i, addComponent );
-			row.add(objectInfo);
+			var objectButton = new UI.ObjectButton(objectInfo);
+			row.add(objectButton);
 			objectsList.add(row);
 		}
 	}
 	
 	function addCoilsToSidebar(info) {
 		for (var i = 0; i < info.length; i++) {
+			var objectInfo = {};
+			objectInfo.title = info[i].name;
+			objectInfo.subtitle = info[i].machine + ' config #' + info[i].databaseID + ' (' + info[i].subids.length + ' components)';
+			objectInfo.description = info[i].comment.replace('Copied to the new database (CoilsDB2).', '');
+			objectInfo.outlinerTitle = info[i].name + ' (config #' + info[i].databaseID + ')';
+			objectInfo.subids = info[i].subids;
+			objectInfo.addToSceneFunction = addCoils;
+			
 			var row = new UI.Row();
-			var title = info[i].name;
-			var subtitle = info[i].machine + ' config #' + i + ' (' + info[i].subids.length + ' components)';
-			var subids = info[i].subids;
-			var objectInfo = new UI.ObjectButton('config', title, subtitle, info, i, addAssembly );
-			row.add(objectInfo);
+			var objectButton = new UI.ObjectButton(objectInfo);
+			row.add(objectButton);
 			objectsList.add(row);
 		}
 	}
@@ -163,28 +190,44 @@ Sidebar.W7XModels = function ( editor ) {
 		}
 	}
 	
-	function addComponent(assemblyName, id) {
-		addComponentById(id, 1, '');
+	function addSingleComponent(unusedName, arrayWithOnlyID) {
+		addComponentById(arrayWithOnlyID[0], 1, '');
+	}
+	
+	function addCoils(configName, subids) {
+		componentCount = 0;
+		for (var subidi in subids) {
+			addCoilById(subids[subidi], subids.length, configName);
+		}
 	}
 	
     function addComponentById(id, numComponents, assemblyName) {
-        fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/component/' + id + '/data').then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => addMesh(json, id, numComponents, assemblyName));
+        fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/component/' + id + '/data').then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => addObject('component', json, id, numComponents, assemblyName, makeMesh));
     }
     
-    function addMesh(json, id, numComponents, assemblyName) {
-    	var component = makeMesh(json);
-	    component.name = componentsInfo[id].name + ' (component #' + id + ')';
+	function addCoilById(id, numCoils, configName) {
+		fetch('http://esb.ipp-hgw.mpg.de:8280/services/CoilsDBRest/coil/' + id + '/data').then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => addObject('coil', json, id, numCoils, configName, makeLine));
+	}
+	
+    function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction) {
+    	var object = makeObjectFunction(json);
+    	if (type == 'component') {
+	    	component.name = componentsInfo[id].name + ' (component #' + id + ')';
+		}
+		else if (type == 'coil') {
+			object.name = 'coil #' + id;
+		}
 	    
-	    // Add to scene after last component is loaded
 	    if (numComponents == 1) {
-	    	editor.execute( new AddObjectCommand( component  ) );
+	    	editor.execute( new AddObjectCommand( object  ) );
 	    }
 	    else if (numComponents > 1) {
 	    	// Add to construction object
-	    	constructionObject.add(component);
+	    	constructionObject.add(object);
 	    	componentCount += 1;
 	    }
 	    
+	    // Add to scene after last component is loaded
 	    if (componentCount == numComponents) {
 	    	constructionObject.name = assemblyName;
 	        editor.execute( new AddObjectCommand( constructionObject.clone() ) );
@@ -230,12 +273,25 @@ Sidebar.W7XModels = function ( editor ) {
 	    geometry.computeFaceNormals();
 	    
     	var material = new THREE.MeshStandardMaterial({
-            color: 0x555555,
+            color: 0xAAAAAA,
             side: THREE.DoubleSide
         });
 	    
 	    return new THREE.Mesh(geometry, material);
     }
+    
+	function makeLine(json) {
+        data = json.polylineFilament; 
+        var vec = [];
+        for (var i = 0; i < data.vertices.x1.length; i++) {
+	    	vec.push(new THREE.Vector3(data.vertices.x1[i], data.vertices.x2[i], data.vertices.x3[i]));
+        }
+ 
+        var geometry = new THREE.Geometry();
+        geometry.vertices = vec;
+        var material = new THREE.LineBasicMaterial( { color: 0xFF0000, linewidth: 10 } );
+        return new THREE.Line( geometry, material );
+	}
 
 	return container;
 

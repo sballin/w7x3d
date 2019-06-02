@@ -258,7 +258,11 @@ UI.Text.prototype.setValue = function ( value ) {
 
 // ObjectButton
 
-UI.ObjectButton = function ( type, title, subtitle, info, id, addingFunction ) {
+UI.ObjectButton = function ( buttonInfo ) {
+	/* 
+	Fields required by buttonInfo:
+	title, subtitle, description, outlinerTitle, subids, addToSceneFunction
+	*/
 	UI.Element.call( this );
 
 	var dom = document.createElement( 'a' );
@@ -267,37 +271,22 @@ UI.ObjectButton = function ( type, title, subtitle, info, id, addingFunction ) {
 	this.dom = dom;
 	
 	var sub1 = document.createElement( 'div' );
-	sub1.innerHTML = title;
+	sub1.innerHTML = buttonInfo.title;
 	sub1.className = 'ObjectButtonTitle';
 	dom.appendChild(sub1);
 	
 	var sub2 = document.createElement( 'div' );
-	sub2.innerHTML = subtitle;
+	sub2.innerHTML = buttonInfo.subtitle;
 	sub2.className = 'ObjectButtonSubtitle';
 	dom.appendChild(sub2);
 	
 	var sub3 = document.createElement( 'div' );
-	var description = info[id].comment;
-	// Remove unhelpful parts of description
-	description = description.replace('Copied to the new database (CoilsDB2).', '');
-	description = description.replace('Copied to new database (ComponentsDB2)', '');
-	sub3.innerHTML = description;
+	sub3.innerHTML = buttonInfo.description;
 	sub3.className = 'ObjectButtonDescription';
 	dom.appendChild(sub3);
 	
 	function onMouseUp( event ) {
-		if (type == 'assembly') {
-			var outlinerTitle = info[id].name + ' (assembly #' + id + ')';
-			addingFunction(outlinerTitle, info[id].subids);
-		}
-		else if (type == 'component') {
-			addingFunction(info[id].name + ' #' + id, id);
-		}
-		else if (type == 'config') {
-			var outlinerTitle = info[id].name + ' (config #' + id + ')';
-			addingFunction(outlinerTitle, info[id].subids);
-		}
-		
+		buttonInfo.addToSceneFunction(buttonInfo.outlinerTitle, buttonInfo.subids);
 	}
 	
 	dom.addEventListener( 'mouseup', onMouseUp, false );
