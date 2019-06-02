@@ -11,7 +11,9 @@ Sidebar.W7X = function ( editor ) {
 	var container = new UI.Panel();
 	container.setBorderTop( '0' );
 	container.setPaddingTop( '20px' );
-	container.setDisplay( 'none' );
+	
+	// Remove if you want this to display
+	container.setDisplay('none');
 	
 	return container;
 

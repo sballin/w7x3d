@@ -11,15 +11,10 @@ Sidebar.W7XModels = function ( editor ) {
 	var container = new UI.Panel();
 	container.setBorderTop( '0' );
 	container.setPaddingTop( '20px' );
-	container.setDisplay( 'none' );
 	
 	// Used for building an assembly fetch by fetch
 	var componentCount;
 	var constructionObject = new THREE.Object3D();
-
-	var container = new UI.Panel();
-	container.setBorderTop( '0' );
-	container.setPaddingTop( '20px' );
 	
 	// Surface category selection
 	
