@@ -12,15 +12,12 @@ Sidebar.W7XTabs = function ( editor ) {
 	var modelsTab = new UI.Text('Models').setTextTransform( 'uppercase' );
 	modelsTab.onClick( function () { select( 'MODELS' ); } );
 
-	var FLTracerTab = new UI.Text('FL Tracer').setTextTransform( 'uppercase' );
-	FLTracerTab.onClick( function () { select( 'FL TRACER' ); } );
-
-	var VMECTab = new UI.Text('VMEC').setTextTransform( 'uppercase' );
-	VMECTab.onClick( function () { select( 'VMEC' ); } );
+	var magneticsTab = new UI.Text('Magnetics').setTextTransform( 'uppercase' );
+	magneticsTab.onClick( function () { select( 'MAGNETICS' ); } );
 
 	var tabs = new UI.Div();
 	tabs.setId( 'tabs' );
-	tabs.add( modelsTab, FLTracerTab, VMECTab );
+	tabs.add( modelsTab, magneticsTab );
 	container.add( tabs );
 
 	//
@@ -30,40 +27,28 @@ Sidebar.W7XTabs = function ( editor ) {
 	);
 	container.add( models );
 
-	var FLTracer = new UI.Span().add(
-		new Sidebar.W7XFLTracer( editor )
-	);
-	container.add( FLTracer );
-
-	var VMEC = new UI.Span().add(
+	var magnetics = new UI.Span().add(
+		new Sidebar.W7XFLTracer( editor ),
 		new Sidebar.W7XVMEC( editor )
 	);
-	container.add( VMEC );
-
-	//
+	container.add( magnetics );
 
 	function select( section ) {
 
 		modelsTab.setClass( '' );
-		FLTracerTab.setClass( '' );
-		VMECTab.setClass( '' );
+		magneticsTab.setClass( '' );
 
 		models.setDisplay( 'none' );
-		FLTracer.setDisplay( 'none' );
-		VMEC.setDisplay( 'none' );
+		magnetics.setDisplay( 'none' );
 
 		switch ( section ) {
 			case 'MODELS':
 				modelsTab.setClass( 'selected' );
 				models.setDisplay( '' );
 				break;
-			case 'FL TRACER':
-				FLTracerTab.setClass( 'selected' );
-				FLTracer.setDisplay( '' );
-				break;
-			case 'VMEC':
-				VMECTab.setClass( 'selected' );
-				VMEC.setDisplay( '' );
+			case 'MAGNETICS':
+				magneticsTab.setClass( 'selected' );
+				magnetics.setDisplay( '' );
 				break;
 		}
 

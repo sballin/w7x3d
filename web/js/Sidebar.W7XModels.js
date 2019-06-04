@@ -207,7 +207,7 @@ Sidebar.W7XModels = function ( editor ) {
     function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction) {
     	var object = makeObjectFunction(json);
     	if (type == 'component') {
-	    	component.name = componentsInfo[id].name + ' (component #' + id + ')';
+	    	object.name = componentsInfo[id].name + ' (component #' + id + ')';
 		}
 		else if (type == 'coil') {
 			object.name = 'coil #' + id;

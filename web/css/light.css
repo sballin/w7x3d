@@ -1,3 +1,8 @@
+a {
+	color: #656565;
+	/*text-decoration: none;*/
+}
+
 button, a.ObjectButton {
 	color: #555;
 	background-color: #ddd;
