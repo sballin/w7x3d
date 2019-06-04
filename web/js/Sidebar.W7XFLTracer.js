@@ -122,7 +122,7 @@ Sidebar.W7XFLTracer = function(editor) {
 
 	var buttonsRow = new UI.Row();
 	var poincarePlot = new UI.Button('Poincaré plot').onClick(function() {
-		console.log('asdf');
+		callFieldLineTracerService();
 	}).setWidth('120px');
 	var traceLines = new UI.Button('Trace lines').onClick(function() {
 		console.log('asdf2');
@@ -210,8 +210,10 @@ Sidebar.W7XFLTracer = function(editor) {
 			'</config><task><step>' + step + '</step><poincare><phi0>' + phi + '</phi0><numPoints>' +
 			numPoints + '</numPoints></poincare></task></flt:trace>';
 
-		$.get("makeWSRequestPoincare.jag", payload, function(json) {
-
+		fetch("http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestPoincare.jag", {
+			method: "POST",
+			body: payload
+		}).then(function(json) {
 			var vec = [];
 
 			for (var i = 0; i < json.length; i++) {
@@ -227,25 +229,7 @@ Sidebar.W7XFLTracer = function(editor) {
 				opacity: 1.0
 			}));
 			particles.name = elementName;
-
-			parent.add(particles);
-			parent.verticesNeedUpdate = true;
-			render();
-
-			displayScenceGraph();
-
-		}).fail(function() {
-			for (var i = 0; i < scenceChilds.length; i++) {
-				if (scenceChilds[i].name == elementName) {
-					scenceChilds[i].html = 'Error loading plot.. ' +
-						'<button href="#" onclick="removeElement(\'' +
-						elementName + '\');" class="btn btn-danger">' +
-						'<i class="icon-trash icon-white"></i> remove</button>';
-					break;
-				}
-			}
-
-			displayScenceGraph();
+			editor.execute(new AddObjectCommand(particles));
 		});
 	}
 
