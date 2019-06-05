@@ -20,7 +20,7 @@ Sidebar.W7XVMEC = function(editor) {
 	runIDLabel.dom.innerHTML =
 		"VMEC run ID (<a href='http://svvmec1.ipp-hgw.mpg.de:8080/vmecrest/v1/run/' target='_blank'>list</a>)"; //.appendChild(link);
 
-	var VMECRun = new UI.Input('w7x.14000.0_14000.0_13160.0_12950.0_12390.0_-9660.0_-9660.0').setWidth(
+	var VMECRun = new UI.Input('/w7x.14000.0_14000.0_13160.0_12950.0_12390.0_-9660.0_-9660.0').setWidth(
 		'120px');
 
 	VMECRow = new UI.Row();
@@ -45,7 +45,7 @@ Sidebar.W7XVMEC = function(editor) {
 
 	psiRow = new UI.Row();
 
-	psiRow.add(new UI.Text('ψ contours').setWidth('150px'));
+	psiRow.add(new UI.Text('ψ_norm contours').setWidth('150px'));
 	psiRow.add(psis);
 	container.add(psiRow);
 
@@ -72,7 +72,7 @@ Sidebar.W7XVMEC = function(editor) {
 			Function name in source: callVMECService 
 		*/
 
-		var id = VMECRun.getValue();
+		var id = VMECRun.getValue().slice(1); // slices removes beginning /
 		var s = psis.getValue().split(",");
 		var phi = Math.PI / 180 * toroidalAngle.getValue();
 		var points = pointsPerSurface.getValue();
@@ -99,7 +99,7 @@ Sidebar.W7XVMEC = function(editor) {
 				linewidth: 1
 			});
 
-			for (var j = 0; j < json.length; j++) {
+			for (var j = json.length - 1; j >= 0; j--) {
 				var vec = [];
 
 				for (var i = 0; i < json[j].data.length; i++) {
