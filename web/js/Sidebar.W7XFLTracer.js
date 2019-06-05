@@ -48,7 +48,7 @@ Sidebar.W7XFLTracer = function(editor) {
 	configIDRow.add(configIDSelect);
 	container.add(configIDRow);
 
-	waitForConfigs();
+	setTimeout(waitForConfigs, 0); // Important: setTimeout makes this non-blocking
 
 	// Pre-calculated B field grid
 
