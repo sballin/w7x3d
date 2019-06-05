@@ -104,7 +104,7 @@ Sidebar.W7XFLTracer = function(editor) {
 
 	var stepSizeRow = new UI.Row();
 	stepSizeRow.add(new UI.Text('Step size').setWidth('180px'));
-	var stepSize = new UI.Number(1.3).setStep(1).setWidth('50px');
+	var stepSize = new UI.Number(0.3).setStep(1).setWidth('50px');
 	stepSizeRow.add(stepSize);
 
 	container.add(stepSizeRow);
@@ -113,7 +113,7 @@ Sidebar.W7XFLTracer = function(editor) {
 
 	var pointsStepsRow = new UI.Row();
 	pointsStepsRow.add(new UI.Text('Number of points/steps').setWidth('180px'));
-	var pointsSteps = new UI.Integer(205).setWidth('50px').setRange(0, Infinity);
+	var pointsSteps = new UI.Integer(200).setWidth('50px').setRange(0, Infinity);
 	pointsStepsRow.add(pointsSteps);
 
 	container.add(pointsStepsRow);
@@ -210,29 +210,26 @@ Sidebar.W7XFLTracer = function(editor) {
 			'</config><task><step>' + step + '</step><poincare><phi0>' + phi + '</phi0><numPoints>' +
 			numPoints + '</numPoints></poincare></task></flt:trace>';
 
-		fetch("http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestPoincare.jag", {
-			method: "POST",
-			body: payload
-		}).then(function(json) {
+		var poincareScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestPoincare.jag";
+		$.get(poincareScript, payload, function(json) {
 			var vec = [];
-
 			for (var i = 0; i < json.length; i++) {
 				vec.push(new THREE.Vector3(json[i][0], json[i][1], json[i][2]));
 			}
-
 			var geometry = new THREE.Geometry();
 			geometry.vertices = vec;
 
-			var particles = new THREE.ParticleSystem(geometry, new THREE.PointsMaterial({
+			var particles = new THREE.Points(geometry, new THREE.PointsMaterial({
 				color: 0xFF0000,
-				size: 0.015,
+				size: 0.03,
 				opacity: 1.0
 			}));
 			particles.name = elementName;
 			editor.execute(new AddObjectCommand(particles));
+		}).fail(response => {
+			console.log('Poincaré failed', response);
 		});
 	}
 
 	return container;
-
 };
