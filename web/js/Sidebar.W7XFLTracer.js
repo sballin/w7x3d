@@ -121,12 +121,8 @@ Sidebar.W7XFLTracer = function(editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var poincarePlot = new UI.Button('Poincaré plot').onClick(function() {
-		callFieldLineTracerService();
-	}).setWidth('120px');
-	var traceLines = new UI.Button('Trace lines').onClick(function() {
-		console.log('asdf2');
-	}).setWidth('120px');
+	var poincarePlot = new UI.Button('Poincaré plot').onClick(callPoincare).setWidth('120px');
+	var traceLines = new UI.Button('Trace lines').onClick(callServiceTraceLines).setWidth('120px');
 	var separator = new UI.Text('  '); // Special no-break space character
 	buttonsRow.add(poincarePlot, separator, traceLines);
 
@@ -140,23 +136,27 @@ Sidebar.W7XFLTracer = function(editor) {
 		return d;
 	}
 
-	function callFieldLineTracerService() {
+	function callPoincare() {
+		/* 
+			Source: http://webservices.ipp-hgw.mpg.de/docs/js/tryit.js 
+			Function name in source: callFieldLineTracerService 
+		*/
 
 		var phi = Math.PI / 180 * toroidalAngle.getValue();
 
-		var numStarts = numStartsEntry.getValue();
+		var numStartingPoints = numStartsEntry.getValue();
 
-		var x1_min = xMin.getValue();
-		var x2_min = yMin.getValue();
-		var x3_min = zMin.getValue();
+		var x1min = xMin.getValue();
+		var x2min = yMin.getValue();
+		var x3min = zMin.getValue();
 
-		var x1_max = xMax.getValue();
-		var x2_max = yMax.getValue();
-		var x3_max = zMax.getValue();
+		var x1max = xMax.getValue();
+		var x2max = yMax.getValue();
+		var x3max = zMax.getValue();
 
-		var x1 = linespace(x1_min, x1_max, numStarts);
-		var x2 = linespace(x2_min, x2_max, numStarts);
-		var x3 = linespace(x3_min, x3_max, numStarts);
+		var x1 = linespace(x1min, x1max, numStartingPoints);
+		var x2 = linespace(x2min, x2max, numStartingPoints);
+		var x3 = linespace(x3min, x3max, numStartingPoints);
 
 		var configID = configIDEntry.getValue();
 		var step = stepSize.getValue();
@@ -202,7 +202,7 @@ Sidebar.W7XFLTracer = function(editor) {
 				"</numPhi></cylindrical><fieldSymmetry>" + 5 + "</fieldSymmetry></grid>";
 		}
 
-		var elementName = 'Poincare_Plot' + "_config" + configID + "_phi" + phi;
+		var elementName = 'Poincaré (config ' + configID + ', ' + toroidalAngle.getValue() + ' deg)';
 
 		var payload = '<flt:trace xmlns:flt="fltracer.gsoap.boz.hgw.ipp.mpg.de"><points>';
 		payload += x1Tags + x2Tags + x3Tags;
@@ -224,6 +224,108 @@ Sidebar.W7XFLTracer = function(editor) {
 				size: 0.03,
 				opacity: 1.0
 			}));
+			particles.name = elementName;
+			editor.execute(new AddObjectCommand(particles));
+		}).fail(response => {
+			console.log('Poincaré failed', response);
+		});
+	}
+
+	function callServiceTraceLines() {
+		/* 
+			Source: http://webservices.ipp-hgw.mpg.de/docs/js/tryit.js 
+			Function name in source: callServiceTraceLines 
+			Similar to callPoincare in getting UI values, but different otherwise
+		*/
+
+		var phi = Math.PI / 180 * toroidalAngle.getValue();
+
+		var numStartingPoints = numStartsEntry.getValue();
+
+		var x1min = xMin.getValue();
+		var x2min = yMin.getValue();
+		var x3min = zMin.getValue();
+
+		var x1max = xMax.getValue();
+		var x2max = yMax.getValue();
+		var x3max = zMax.getValue();
+
+		var x1 = linespace(x1min, x1max, numStartingPoints);
+		var x2 = linespace(x2min, x2max, numStartingPoints);
+		var x3 = linespace(x3min, x3max, numStartingPoints);
+
+		var configID = configIDEntry.getValue();
+		var step = stepSize.getValue();
+		var numPoints = pointsSteps.getValue();
+
+		if (x1.length != x2.length || x1.length != x3.length) {
+			alert("Error: length of x1 | x2 | x3 array should be the same!");
+			return;
+		}
+
+		var x1Tags = "";
+		var x2Tags = "";
+		var x3Tags = "";
+
+		var fieldperiod = 0; // a removed checkbox in tryit.js allowed changing this to 5
+
+		for (i = 0; i < x1.length; i++) {
+			x1Tags += '<x1>' + x1[i] + '</x1>';
+			x2Tags += '<x2>' + x2[i] + '</x2>';
+			x3Tags += '<x3>' + x3[i] + '</x3>';
+		}
+
+		for (var i = 1; i < fieldperiod; i++) {
+			var phiTmp = (i * 2 * Math.PI / fieldperiod) + parseFloat(phi);
+
+			for (j = 0; j < x1.length; j++) {
+				x1Tags += '<x1>' + x1[j] * Math.cos(phiTmp) + '</x1>';
+				x2Tags += '<x2>' + x1[j] * Math.sin(phiTmp) + '</x2>';
+				x3Tags += '<x3>' + x3[j] + '</x3>';
+			}
+		}
+
+		var grid = '';
+
+		if (precalc.getValue()) {
+			grid = "<grid><cylindrical><RMin>" + 4.05 + "</RMin><RMax>" + 6.75 + "</RMax><ZMin>" + -1.35 +
+				"</ZMin><ZMax>" + 1.35 + "</ZMax><numR>" + 181 + "</numR><numZ>" + 181 + "</numZ><numPhi>" +
+				481 +
+				"</numPhi></cylindrical><fieldSymmetry>" + 5 + "</fieldSymmetry></grid>";
+		}
+
+		var elementName = 'Field lines (config ' + configID + ', ' + toroidalAngle.getValue() +
+			' deg)';
+
+		var payload = '<flt:trace xmlns:flt="fltracer.gsoap.boz.hgw.ipp.mpg.de"><points>';
+		payload += x1Tags + x2Tags + x3Tags;
+		payload += '</points><config><configIds>' + configID + '</configIds>' + grid + '</config>' +
+			'<task><step>' + step + '</step><lines><numSteps>' + numPoints +
+			'</numSteps><globalError>false</globalError><localError>false</localError></lines></task></flt:trace>';
+
+		var FLScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestTraceLines.jag";
+		$.get(FLScript, payload, function(json) {
+
+			var vec = [];
+
+			for (var i = 0; i < json.length; i++) {
+				vec.push(new THREE.Vector3(json[i][0], json[i][1], json[i][2]));
+			}
+
+			var geometry = new THREE.Geometry();
+			geometry.vertices = vec;
+
+			var particles = new THREE.Points(geometry, new THREE.PointsMaterial({
+				color: 0xFF0000,
+				size: 0.03,
+				opacity: 1.0
+			}));
+
+			// results ugly connections between first and last point in some cases...
+			//var material = new THREE.LineBasicMaterial({  color: pickedColor });
+			//var particles2 = new THREE.Line(geometry, material);
+			//  var particles2 = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: pickedColor, linewidth: 1 } ) );
+
 			particles.name = elementName;
 			editor.execute(new AddObjectCommand(particles));
 		}).fail(response => {
