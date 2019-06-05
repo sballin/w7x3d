@@ -17,19 +17,45 @@ Sidebar.W7XFLTracer = function(editor) {
 
 	// Config ID
 
-	var configIDRow = new UI.Row();
-	configIDRow.add(new UI.Text('CoilsDB config ID').setWidth('180px'));
-	var configIDEntry = new UI.Integer(0).setRange(0, Infinity).setWidth('25px');
-	configIDRow.add(configIDEntry);
+	function getConfigs() {
+		return new Promise(resolve => {
+			while (!configsInfo) {
+				configsInfo = editor.config.getKey('coilsDB/configs');
+			}
+			var configOptions = {};
+			for (var configi in configsInfo) {
+				var config = configsInfo[configi];
+				var displayString = config.databaseID + ': ' + config.machine + ' ' + config.name;
+				configOptions[config.databaseID] = displayString;
+			}
+			configIDSelect.setOptions(configOptions);
+			configIDSelect.setValue(0);
+		});
+	}
 
+	async function waitForConfigs() {
+		await getConfigs();
+	}
+
+	var configsInfo;
+	var configIDRow = new UI.Row();
+	configIDRow.add(new UI.Text('Config ID').setWidth('101px'));
+	// value: display
+	var configIDSelect = new UI.Select().setOptions({
+		'0': 'Options not loaded'
+	}).setWidth('179px').setFontSize('12px');
+	configIDSelect.setValue('Assemblies');
+	configIDRow.add(configIDSelect);
 	container.add(configIDRow);
+
+	waitForConfigs();
 
 	// Pre-calculated B field grid
 
 	var precalcRow = new UI.Row();
 	var precalc = new UI.Checkbox(true).setWidth('25px');
 
-	precalcRow.add(new UI.Text('Pre-calculated B field grid').setWidth('170px'));
+	precalcRow.add(new UI.Text('Pre-calculated B field grid').setWidth('90px'));
 	precalcRow.add(precalc);
 	container.add(precalcRow);
 
@@ -121,9 +147,10 @@ Sidebar.W7XFLTracer = function(editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var poincarePlot = new UI.Button('Poincaré plot').onClick(callPoincare).setWidth('120px');
-	var traceLines = new UI.Button('Trace lines').onClick(callServiceTraceLines).setWidth('120px');
-	var separator = new UI.Text('  '); // Special no-break space character
+	var poincarePlot = new UI.Button('Add Poincaré plot').onClick(callPoincare).setWidth('134px');
+	var traceLines = new UI.Button('Add field lines').onClick(callServiceTraceLines).setWidth('134px');
+	var separator = new UI.Div().setWidth('10px');
+	separator.dom.style.display = 'inline-block';
 	buttonsRow.add(poincarePlot, separator, traceLines);
 
 	container.add(buttonsRow);
@@ -158,7 +185,7 @@ Sidebar.W7XFLTracer = function(editor) {
 		var x2 = linespace(x2min, x2max, numStartingPoints);
 		var x3 = linespace(x3min, x3max, numStartingPoints);
 
-		var configID = configIDEntry.getValue();
+		var configID = configIDSelect.getValue();
 		var step = stepSize.getValue();
 		var numPoints = pointsSteps.getValue();
 
