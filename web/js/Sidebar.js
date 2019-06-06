@@ -2,81 +2,88 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-var Sidebar = function ( editor ) {
+var Sidebar = function (editor) {
 
 	var strings = editor.strings;
 
 	var container = new UI.Panel();
-	container.setId( 'sidebar' );
+	container.setId('sidebar');
 
 	//
 
-	var sceneTab = new UI.Text( strings.getKey( 'sidebar/scene' ) ).setTextTransform( 'uppercase' );
-	sceneTab.onClick( function () { select( 'SCENE' ) } );
+	var sceneTab = new UI.Text(strings.getKey('sidebar/scene')).setTextTransform('uppercase');
+	sceneTab.onClick(function () {
+		select('SCENE')
+	});
 
-	var projectTab = new UI.Text( strings.getKey( 'sidebar/project' ) ).setTextTransform( 'uppercase' );
-	projectTab.onClick( function () { select( 'W7-X' ) } );
+	var projectTab = new UI.Text(strings.getKey('sidebar/project')).setTextTransform('uppercase');
+	projectTab.onClick(function () {
+		select('W7-X')
+	});
 
-	var settingsTab = new UI.Text( strings.getKey( 'sidebar/settings' ) ).setTextTransform( 'uppercase' );
-	settingsTab.onClick( function () { select( 'SETTINGS' ) } );
+	var settingsTab = new UI.Text(strings.getKey('sidebar/settings')).setTextTransform(
+		'uppercase');
+	settingsTab.onClick(function () {
+		select('SETTINGS')
+	});
 
 	var tabs = new UI.Div();
-	tabs.setId( 'tabs' );
-	tabs.add( sceneTab, projectTab, settingsTab );
-	container.add( tabs );
+	tabs.setId('tabs');
+	tabs.add(sceneTab, projectTab, settingsTab);
+	container.add(tabs);
 
 	//
 
 	var scene = new UI.Span().add(
-		new Sidebar.Scene( editor ),
-		new Sidebar.Properties( editor ),
-		new Sidebar.Animation( editor ),
-		new Sidebar.Script( editor )
+		new Sidebar.Scene(editor),
+		new Sidebar.Properties(editor),
+		new Sidebar.Animation(editor),
+		new Sidebar.Script(editor)
 	);
-	container.add( scene );
+	container.add(scene);
 
 	var project = new UI.Span().add(
-		new Sidebar.W7X( editor ),
-		new Sidebar.W7XTabs( editor )
+		new Sidebar.W7X(editor),
+		new Sidebar.W7XTabs(editor)
 	);
-	container.add( project );
+	container.add(project);
 
 	var settings = new UI.Span().add(
-		new Sidebar.Settings( editor ),
-		new Sidebar.History( editor )
+		new Sidebar.Settings(editor),
+		new Sidebar.History(editor)
 	);
-	container.add( settings );
+	container.add(settings);
 
 	//
 
-	function select( section ) {
+	function select(section) {
 
-		sceneTab.setClass( '' );
-		projectTab.setClass( '' );
-		settingsTab.setClass( '' );
+		sceneTab.setClass('');
+		projectTab.setClass('');
+		settingsTab.setClass('');
 
-		scene.setDisplay( 'none' );
-		project.setDisplay( 'none' );
-		settings.setDisplay( 'none' );
+		scene.setDisplay('none');
+		project.setDisplay('none');
+		settings.setDisplay('none');
 
-		switch ( section ) {
+		switch (section) {
 			case 'SCENE':
-				sceneTab.setClass( 'selected' );
-				scene.setDisplay( '' );
+				sceneTab.setClass('selected');
+				scene.setDisplay('');
 				break;
 			case 'W7-X':
-				projectTab.setClass( 'selected' );
-				project.setDisplay( '' );
+				projectTab.setClass('selected');
+				project.setDisplay('');
 				break;
 			case 'SETTINGS':
-				settingsTab.setClass( 'selected' );
-				settings.setDisplay( '' );
+				settingsTab.setClass('selected');
+				settings.setDisplay('');
 				break;
 		}
 
 	}
 
-	select( 'SCENE' );
+	select('W7-X');
 
 	return container;
 

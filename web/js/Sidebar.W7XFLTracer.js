@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.W7XFLTracer = function(editor) {
+Sidebar.W7XFLTracer = function (editor) {
 
 	var strings = editor.strings;
 
@@ -27,7 +27,7 @@ Sidebar.W7XFLTracer = function(editor) {
 	configIDRow.add(configIDSelect);
 	container.add(configIDRow);
 
-	editor.setFLTracerConfigIDs = function(configsInfo) {
+	editor.setFLTracerConfigIDs = function (configsInfo) {
 		var configOptions = {};
 		for (var configi in configsInfo) {
 			var config = configsInfo[configi];
@@ -135,10 +135,10 @@ Sidebar.W7XFLTracer = function(editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var poincarePlot = new UI.Button('Add Poincaré plot').onClick(function() {
+	var poincarePlot = new UI.Button('Add Poincaré plot').onClick(function () {
 		callPoincare(this);
 	}).setWidth('134px');
-	var traceLines = new UI.Button('Add field lines').onClick(function() {
+	var traceLines = new UI.Button('Add field lines').onClick(function () {
 		callServiceTraceLines(this);
 	}).setWidth('134px');
 	var separator = new UI.Div().setWidth('10px');
@@ -235,7 +235,7 @@ Sidebar.W7XFLTracer = function(editor) {
 			numPoints + '</numPoints></poincare></task></flt:trace>';
 
 		var poincareScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestPoincare.jag";
-		$.get(poincareScript, payload, function(json) {
+		$.get(poincareScript, payload, function (json) {
 			var vec = [];
 			for (var i = 0; i < json.length; i++) {
 				vec.push(new THREE.Vector3(json[i][0], json[i][1], json[i][2]));
@@ -288,7 +288,7 @@ Sidebar.W7XFLTracer = function(editor) {
 
 		var configID = configIDSelect.getValue();
 		var step = stepSize.getValue();
-		var numPoints = pointsSteps.getValue();
+		var numSteps = pointsSteps.getValue();
 
 		if (x1.length != x2.length || x1.length != x3.length) {
 			alert("Error: length of x1 | x2 | x3 array should be the same!");
@@ -332,34 +332,37 @@ Sidebar.W7XFLTracer = function(editor) {
 		var payload = '<flt:trace xmlns:flt="fltracer.gsoap.boz.hgw.ipp.mpg.de"><points>';
 		payload += x1Tags + x2Tags + x3Tags;
 		payload += '</points><config><configIds>' + configID + '</configIds>' + grid + '</config>' +
-			'<task><step>' + step + '</step><lines><numSteps>' + numPoints +
+			'<task><step>' + step + '</step><lines><numSteps>' + numSteps +
 			'</numSteps><globalError>false</globalError><localError>false</localError></lines></task></flt:trace>';
 
 		var FLScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestTraceLines.jag";
-		$.get(FLScript, payload, function(json) {
+		$.get(FLScript, payload, function (json) {
 
-			var vec = [];
+			var lineObj = new THREE.Object3D();
+			var material = new THREE.LineBasicMaterial({
+				color: 0xFF0000,
+				linewidth: 1
+			});
 
-			for (var i = 0; i < json.length; i++) {
-				vec.push(new THREE.Vector3(json[i][0], json[i][1], json[i][2]));
+			console.log(json);
+
+			for (var i = 0; i < numStartingPoints; i++) {
+				var vec = [];
+
+				for (var j = i * (numSteps + 1); j < (i + 1) * (numSteps + 1); j++) {
+					vec.push(new THREE.Vector3(json[j][0], json[j][1], json[j][2]));
+				}
+
+				var geometry = new THREE.Geometry();
+				geometry.vertices = vec;
+				var line = new THREE.Line(geometry, material);
+				line.name = 'Start X=' + parseFloat(vec[0].x).toFixed(6) + ' Y=' +
+					parseFloat(vec[0].y).toFixed(6) + ' Z=' + parseFloat(vec[0].z).toFixed(6);
+				lineObj.add(line);
 			}
 
-			var geometry = new THREE.Geometry();
-			geometry.vertices = vec;
-
-			var particles = new THREE.Points(geometry, new THREE.PointsMaterial({
-				color: 0xFF0000,
-				size: 0.03,
-				opacity: 1.0
-			}));
-
-			// results ugly connections between first and last point in some cases...
-			//var material = new THREE.LineBasicMaterial({  color: pickedColor });
-			//var particles2 = new THREE.Line(geometry, material);
-			//  var particles2 = new THREE.Line( geometry, new THREE.LineBasicMaterial( { color: pickedColor, linewidth: 1 } ) );
-
-			particles.name = elementName;
-			editor.execute(new AddObjectCommand(particles));
+			lineObj.name = elementName;
+			editor.execute(new AddObjectCommand(lineObj));
 			button.dom.removeChild(busyOverlay);
 		}).fail(response => {
 			console.log('Poincaré failed', response);
