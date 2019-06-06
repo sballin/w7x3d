@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.W7XVMEC = function(editor) {
+Sidebar.W7XVMEC = function (editor) {
 
 	var strings = editor.strings;
 
@@ -61,7 +61,7 @@ Sidebar.W7XVMEC = function(editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var addVMEC = new UI.Button('Add flux surfaces').onClick(function() {
+	var addVMEC = new UI.Button('Add flux surfaces').onClick(function () {
 		callVMECService(this);
 	}).setWidth('278px');
 	buttonsRow.add(addVMEC);
@@ -98,7 +98,7 @@ Sidebar.W7XVMEC = function(editor) {
 		var elementName = 'Flux surfaces (' + id + ", " + toroidalAngle.getValue() + ' deg)';
 
 		var VMECScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequest.jag";
-		$.get(VMECScript, payload, function(json) {
+		$.get(VMECScript, payload, function (json) {
 
 			var lineObj = new THREE.Object3D();
 			var material = new THREE.LineBasicMaterial({
