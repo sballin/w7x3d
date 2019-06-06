@@ -261,12 +261,13 @@ UI.Text.prototype.setValue = function ( value ) {
 UI.ObjectButton = function ( buttonInfo ) {
 	/* 
 	Fields required by buttonInfo:
-	title, subtitle, description, outlinerTitle, subids, addToSceneFunction
+	id, title, subtitle, description, outlinerTitle, subids, addToSceneFunction
 	*/
 	UI.Element.call( this );
 
 	var dom = document.createElement( 'a' );
 	dom.className = 'ObjectButton';
+	// dom.id = buttonInfo.id;
 
 	this.dom = dom;
 	
@@ -286,7 +287,11 @@ UI.ObjectButton = function ( buttonInfo ) {
 	dom.appendChild(sub3);
 	
 	function onMouseUp( event ) {
-		buttonInfo.addToSceneFunction(buttonInfo.outlinerTitle, buttonInfo.subids);
+		var sub4 = document.createElement( 'div' );
+		sub4.innerHTML = '<p>DOWNLOADING</p>';
+		sub4.className = 'overlay';
+		dom.appendChild(sub4);
+		buttonInfo.addToSceneFunction(buttonInfo.outlinerTitle, buttonInfo.subids, sub4);
 	}
 	
 	dom.addEventListener( 'mouseup', onMouseUp, false );

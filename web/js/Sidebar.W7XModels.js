@@ -133,7 +133,7 @@ Sidebar.W7XModels = function(editor) {
 	});
 
 	function addAssembliesToSidebar(info) {
-		for (var i = 0; i < info.length; i++) {
+	for (var i = 0; i < info.length; i++) {
 			var objectInfo = {};
 			objectInfo.title = info[i].name;
 			objectInfo.subtitle = info[i].machine + ' assembly #' + info[i].databaseID +
@@ -185,40 +185,41 @@ Sidebar.W7XModels = function(editor) {
 		}
 	}
 
-	function addAssembly(assemblyName, subids) {
+	function addAssembly(assemblyName, subids, overlayToRemove) {
 		componentCount = 0;
 		for (var subidi in subids) {
-			addComponentById(subids[subidi], subids.length, assemblyName);
+			addComponentById(subids[subidi], subids.length, assemblyName, overlayToRemove);
+			
 		}
 	}
 
-	function addSingleComponent(unusedName, arrayWithOnlyID) {
-		addComponentById(arrayWithOnlyID[0], 1, '');
+	function addSingleComponent(unusedName, arrayWithOnlyID, overlayToRemove) {
+		addComponentById(arrayWithOnlyID[0], 1, '', overlayToRemove);
 	}
 
-	function addCoils(configName, subids) {
+	function addCoils(configName, subids, overlayToRemove) {
 		componentCount = 0;
 		for (var subidi in subids) {
-			addCoilById(subids[subidi], subids.length, configName);
+			addCoilById(subids[subidi], subids.length, configName, overlayToRemove);
 		}
 	}
 
-	function addComponentById(id, numComponents, assemblyName) {
+	function addComponentById(id, numComponents, assemblyName, overlayToRemove) {
 		fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/component/' + id + '/data').then(
 			response => {
 				if (response.ok) return response.json();
 				else throw Error('Request rejected with status ${response.status}');
-			}).then(json => addObject('component', json, id, numComponents, assemblyName, makeMesh));
+			}).then(json => addObject('component', json, id, numComponents, assemblyName, makeMesh, overlayToRemove));
 	}
 
-	function addCoilById(id, numCoils, configName) {
+	function addCoilById(id, numCoils, configName, overlayToRemove) {
 		fetch('http://esb.ipp-hgw.mpg.de:8280/services/CoilsDBRest/coil/' + id + '/data').then(response => {
 			if (response.ok) return response.json();
 			else throw Error('Request rejected with status ${response.status}');
-		}).then(json => addObject('coil', json, id, numCoils, configName, makeLine));
+		}).then(json => addObject('coil', json, id, numCoils, configName, makeLine, overlayToRemove));
 	}
 
-	function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction) {
+	function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction, overlayToRemove) {
 		var object = makeObjectFunction(json);
 		if (type == 'component') {
 			object.name = componentsInfo[id].name + ' (component #' + id + ')';
@@ -228,6 +229,8 @@ Sidebar.W7XModels = function(editor) {
 
 		if (numComponents == 1) {
 			editor.execute(new AddObjectCommand(object));
+			// Remove Downloading overlay
+			overlayToRemove.parentElement.removeChild(overlayToRemove);
 		} else if (numComponents > 1) {
 			// Add to construction object
 			constructionObject.add(object);
@@ -241,6 +244,8 @@ Sidebar.W7XModels = function(editor) {
 			while (constructionObject.children.length > 0) {
 				constructionObject.remove(constructionObject.children[0]);
 			}
+			// Remove Downloading overlay
+			overlayToRemove.parentElement.removeChild(overlayToRemove);
 		}
 	}
 
