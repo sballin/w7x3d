@@ -17,38 +17,26 @@ Sidebar.W7XFLTracer = function(editor) {
 
 	// Config ID
 
-	function getConfigs() {
-		return new Promise(resolve => {
-			while (!configsInfo) {
-				configsInfo = editor.config.getKey('coilsDB/configs');
-			}
-			var configOptions = {};
-			for (var configi in configsInfo) {
-				var config = configsInfo[configi];
-				var displayString = config.databaseID + ': ' + config.machine + ' ' + config.name;
-				configOptions[config.databaseID] = displayString;
-			}
-			configIDSelect.setOptions(configOptions);
-			configIDSelect.setValue(0);
-		});
-	}
-
-	async function waitForConfigs() {
-		await getConfigs();
-	}
-
 	var configsInfo;
 	var configIDRow = new UI.Row();
 	configIDRow.add(new UI.Text('Config ID').setWidth('101px'));
-	// value: display
 	var configIDSelect = new UI.Select().setOptions({
 		'0': 'Options not loaded'
 	}).setWidth('179px').setFontSize('12px');
 	configIDSelect.setValue('Assemblies');
 	configIDRow.add(configIDSelect);
 	container.add(configIDRow);
-
-	setTimeout(waitForConfigs, 0); // Important: setTimeout makes this non-blocking
+    
+    editor.setFLTracerConfigIDs = function(configsInfo) {
+        var configOptions = {};
+            for (var configi in configsInfo) {
+                var config = configsInfo[configi];
+                var displayString = config.databaseID + ': ' + config.machine + ' ' + config.name;
+                configOptions[config.databaseID] = displayString;
+            }
+            configIDSelect.setOptions(configOptions);
+            configIDSelect.setValue(0);
+    };
 
 	// Pre-calculated B field grid
 

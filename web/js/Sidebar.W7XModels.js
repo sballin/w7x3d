@@ -129,7 +129,7 @@ Sidebar.W7XModels = function(editor) {
 		for (var i in configsInfo) {
 			configsInfo[i].databaseID = i;
 		}
-		config.setKey('coilsDB/configs', configsInfo);
+		editor.setFLTracerConfigIDs(configsInfo);
 	});
 
 	function addAssembliesToSidebar(info) {
