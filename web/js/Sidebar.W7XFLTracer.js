@@ -23,20 +23,20 @@ Sidebar.W7XFLTracer = function(editor) {
 	var configIDSelect = new UI.Select().setOptions({
 		'0': 'Options not loaded'
 	}).setWidth('179px').setFontSize('12px');
-	configIDSelect.setValue('Assemblies');
+	configIDSelect.setValue('0');
 	configIDRow.add(configIDSelect);
 	container.add(configIDRow);
-    
-    editor.setFLTracerConfigIDs = function(configsInfo) {
-        var configOptions = {};
-            for (var configi in configsInfo) {
-                var config = configsInfo[configi];
-                var displayString = config.databaseID + ': ' + config.machine + ' ' + config.name;
-                configOptions[config.databaseID] = displayString;
-            }
-            configIDSelect.setOptions(configOptions);
-            configIDSelect.setValue(0);
-    };
+
+	editor.setFLTracerConfigIDs = function(configsInfo) {
+		var configOptions = {};
+		for (var configi in configsInfo) {
+			var config = configsInfo[configi];
+			var displayString = config.databaseID + ': ' + config.machine + ' ' + config.name;
+			configOptions[config.databaseID] = displayString;
+		}
+		configIDSelect.setOptions(configOptions);
+		configIDSelect.setValue(0);
+	};
 
 	// Pre-calculated B field grid
 
@@ -135,8 +135,12 @@ Sidebar.W7XFLTracer = function(editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var poincarePlot = new UI.Button('Add Poincaré plot').onClick(callPoincare).setWidth('134px');
-	var traceLines = new UI.Button('Add field lines').onClick(callServiceTraceLines).setWidth('134px');
+	var poincarePlot = new UI.Button('Add Poincaré plot').onClick(function() {
+		callPoincare(this);
+	}).setWidth('134px');
+	var traceLines = new UI.Button('Add field lines').onClick(function() {
+		callServiceTraceLines(this);
+	}).setWidth('134px');
 	var separator = new UI.Div().setWidth('10px');
 	separator.dom.style.display = 'inline-block';
 	buttonsRow.add(poincarePlot, separator, traceLines);
@@ -151,11 +155,16 @@ Sidebar.W7XFLTracer = function(editor) {
 		return d;
 	}
 
-	function callPoincare() {
+	function callPoincare(button) {
 		/* 
 			Source: http://webservices.ipp-hgw.mpg.de/docs/js/tryit.js 
 			Function name in source: callFieldLineTracerService 
 		*/
+
+		// Grey out button so the user knows it's working
+		var busyOverlay = document.createElement('div');
+		busyOverlay.className = 'overlay';
+		button.dom.appendChild(busyOverlay);
 
 		var phi = Math.PI / 180 * toroidalAngle.getValue();
 
@@ -241,17 +250,25 @@ Sidebar.W7XFLTracer = function(editor) {
 			}));
 			particles.name = elementName;
 			editor.execute(new AddObjectCommand(particles));
+			button.dom.removeChild(busyOverlay);
 		}).fail(response => {
 			console.log('Poincaré failed', response);
+			alert('Operation failed—settings may be invalid. See developer tools console for more info.');
+			button.dom.removeChild(busyOverlay);
 		});
 	}
 
-	function callServiceTraceLines() {
+	function callServiceTraceLines(button) {
 		/* 
 			Source: http://webservices.ipp-hgw.mpg.de/docs/js/tryit.js 
 			Function name in source: callServiceTraceLines 
 			Similar to callPoincare in getting UI values, but different otherwise
 		*/
+
+		// Grey out button so the user knows it's working
+		var busyOverlay = document.createElement('div');
+		busyOverlay.className = 'overlay';
+		button.dom.appendChild(busyOverlay);
 
 		var phi = Math.PI / 180 * toroidalAngle.getValue();
 
@@ -269,7 +286,7 @@ Sidebar.W7XFLTracer = function(editor) {
 		var x2 = linespace(x2min, x2max, numStartingPoints);
 		var x3 = linespace(x3min, x3max, numStartingPoints);
 
-		var configID = configIDEntry.getValue();
+		var configID = configIDSelect.getValue();
 		var step = stepSize.getValue();
 		var numPoints = pointsSteps.getValue();
 
@@ -343,8 +360,11 @@ Sidebar.W7XFLTracer = function(editor) {
 
 			particles.name = elementName;
 			editor.execute(new AddObjectCommand(particles));
+			button.dom.removeChild(busyOverlay);
 		}).fail(response => {
 			console.log('Poincaré failed', response);
+			alert('Operation failed—settings may be invalid. See developer tools console for more info.');
+			button.dom.removeChild(busyOverlay);
 		});
 	}
 

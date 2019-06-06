@@ -61,16 +61,23 @@ Sidebar.W7XVMEC = function(editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var addVMEC = new UI.Button('Add flux surfaces').onClick(callVMECService).setWidth('278px');
+	var addVMEC = new UI.Button('Add flux surfaces').onClick(function() {
+		callVMECService(this);
+	}).setWidth('278px');
 	buttonsRow.add(addVMEC);
 
 	container.add(buttonsRow);
 
-	function callVMECService() {
+	function callVMECService(button) {
 		/* 
 			Source: http://webservices.ipp-hgw.mpg.de/docs/js/tryit.js 
 			Function name in source: callVMECService 
 		*/
+
+		// Grey out button so the user knows it's working
+		var busyOverlay = document.createElement('div');
+		busyOverlay.className = 'overlay';
+		button.dom.appendChild(busyOverlay);
 
 		var id = VMECRun.getValue().slice(1); // slices removes beginning /
 		var s = psis.getValue().split(",");
@@ -116,8 +123,11 @@ Sidebar.W7XVMEC = function(editor) {
 			}
 			lineObj.name = elementName;
 			editor.execute(new AddObjectCommand(lineObj));
+			button.dom.removeChild(busyOverlay);
 		}).fail(response => {
 			console.log('Flux surface addition failed', response);
+			alert('Operation failed—settings may be invalid. See developer tools console for more info.');
+			button.dom.removeChild(busyOverlay);
 		});
 	}
 
