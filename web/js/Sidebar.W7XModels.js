@@ -237,6 +237,8 @@ Sidebar.W7XModels = function (editor) {
 			// Add to construction object
 			constructionObject.add(object);
 			componentCount += 1;
+			var percentage = parseInt(componentCount / numComponents * 100);
+			downloadingOverlay.children[0].innerHTML = 'DOWNLOADING (' + percentage + '%)';
 		}
 
 		// Add to scene after last component is loaded
