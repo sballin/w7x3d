@@ -186,43 +186,56 @@ Sidebar.W7XModels = function (editor) {
 	}
 
 	function addAssembly(assemblyName, subids, downloadingOverlay) {
+		var material = new THREE.MeshStandardMaterial({
+			color: 0xAAAAAA,
+			side: THREE.DoubleSide
+		});
 		componentCount = 0;
 		for (var subidi in subids) {
-			addComponentById(subids[subidi], subids.length, assemblyName, downloadingOverlay);
+			addComponentById(subids[subidi], subids.length, assemblyName, material, downloadingOverlay);
 
 		}
 	}
 
 	function addSingleComponent(unusedName, arrayWithOnlyID, downloadingOverlay) {
-		addComponentById(arrayWithOnlyID[0], 1, '', downloadingOverlay);
+		var material = new THREE.MeshStandardMaterial({
+			color: 0xAAAAAA,
+			side: THREE.DoubleSide
+		});
+		addComponentById(arrayWithOnlyID[0], 1, '', material, downloadingOverlay);
 	}
 
 	function addCoils(configName, subids, downloadingOverlay) {
+		var material = new THREE.LineBasicMaterial({
+			color: 0x0000FF,
+			linewidth: 10
+		});
 		componentCount = 0;
 		for (var subidi in subids) {
-			addCoilById(subids[subidi], subids.length, configName, downloadingOverlay);
+			addCoilById(subids[subidi], subids.length, configName, material, downloadingOverlay);
 		}
 	}
 
-	function addComponentById(id, numComponents, assemblyName, downloadingOverlay) {
+	function addComponentById(id, numComponents, assemblyName, material, downloadingOverlay) {
 		fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/component/' + id + '/data').then(
 			response => {
 				if (response.ok) return response.json();
 				else throw Error('Request rejected with status ${response.status}');
 			}).then(json => addObject('component', json, id, numComponents, assemblyName, makeMesh,
-			downloadingOverlay));
+			material, downloadingOverlay));
 	}
 
-	function addCoilById(id, numCoils, configName, downloadingOverlay) {
+	function addCoilById(id, numCoils, configName, material, downloadingOverlay) {
 		fetch('http://esb.ipp-hgw.mpg.de:8280/services/CoilsDBRest/coil/' + id + '/data').then(response => {
 			if (response.ok) return response.json();
 			else throw Error('Request rejected with status ${response.status}');
-		}).then(json => addObject('coil', json, id, numCoils, configName, makeLine, downloadingOverlay));
+		}).then(json => addObject('coil', json, id, numCoils, configName, makeLine, material,
+			downloadingOverlay));
 	}
 
-	function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction,
+	function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction, material,
 		downloadingOverlay) {
-		var object = makeObjectFunction(json);
+		var object = makeObjectFunction(json, material);
 		if (type == 'component') {
 			object.name = componentsInfo[id].name + ' (component #' + id + ')';
 		} else if (type == 'coil') {
@@ -238,7 +251,7 @@ Sidebar.W7XModels = function (editor) {
 			constructionObject.add(object);
 			componentCount += 1;
 			var percentage = parseInt(componentCount / numComponents * 100);
-			downloadingOverlay.children[0].innerHTML = 'DOWNLOADING (' + percentage + '%)';
+			downloadingOverlay.children[0].innerHTML = 'DOWNLOADING: ' + percentage + '%';
 		}
 
 		// Add to scene after last component is loaded
@@ -253,7 +266,7 @@ Sidebar.W7XModels = function (editor) {
 		}
 	}
 
-	function makeMesh(json) {
+	function makeMesh(json, material) {
 		var data = json.surfaceMesh;
 
 		if (data == undefined) {
@@ -288,27 +301,17 @@ Sidebar.W7XModels = function (editor) {
 		geometry.faces = faces;
 		geometry.computeFaceNormals();
 
-		var material = new THREE.MeshStandardMaterial({
-			color: 0xAAAAAA,
-			side: THREE.DoubleSide
-		});
-
 		return new THREE.Mesh(geometry, material);
 	}
 
-	function makeLine(json) {
+	function makeLine(json, material) {
 		data = json.polylineFilament;
 		var vec = [];
 		for (var i = 0; i < data.vertices.x1.length; i++) {
 			vec.push(new THREE.Vector3(data.vertices.x1[i], data.vertices.x2[i], data.vertices.x3[i]));
 		}
-
 		var geometry = new THREE.Geometry();
 		geometry.vertices = vec;
-		var material = new THREE.LineBasicMaterial({
-			color: 0xFF0000,
-			linewidth: 10
-		});
 		return new THREE.Line(geometry, material);
 	}
 
