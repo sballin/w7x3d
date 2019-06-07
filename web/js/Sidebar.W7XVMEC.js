@@ -100,7 +100,7 @@ Sidebar.W7XVMEC = function (editor) {
 		var VMECScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequest.jag";
 		$.get(VMECScript, payload, function (json) {
 
-			var lineObj = new THREE.Object3D();
+			var lineObj = new THREE.Group();
 			var material = new THREE.LineBasicMaterial({
 				color: 0xFF0000,
 				linewidth: 1
@@ -118,7 +118,7 @@ Sidebar.W7XVMEC = function (editor) {
 				var geometry = new THREE.Geometry();
 				geometry.vertices = vec;
 				var contour = new THREE.Line(geometry, material);
-				contour.name = 'ψ_norm = ' + s[j];
+				contour.name = 'ψ_norm=' + s[j];
 				lineObj.add(contour);
 			}
 			lineObj.name = elementName;

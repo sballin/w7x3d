@@ -338,7 +338,7 @@ Sidebar.W7XFLTracer = function (editor) {
 		var FLScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestTraceLines.jag";
 		$.get(FLScript, payload, function (json) {
 
-			var lineObj = new THREE.Object3D();
+			var lineObj = new THREE.Group();
 			var material = new THREE.LineBasicMaterial({
 				color: 0xFF0000,
 				linewidth: 1

@@ -2,7 +2,7 @@
  * @author mrdoob / http://mrdoob.com/
  */
 
-Sidebar.W7XModels = function(editor) {
+Sidebar.W7XModels = function (editor) {
 
 	var config = editor.config;
 	var strings = editor.strings;
@@ -14,7 +14,7 @@ Sidebar.W7XModels = function(editor) {
 
 	// Used for building an assembly fetch by fetch
 	var componentCount;
-	var constructionObject = new THREE.Object3D();
+	var constructionObject = new THREE.Group();
 
 	// Surface category selection
 
@@ -26,7 +26,7 @@ Sidebar.W7XModels = function(editor) {
 		'Coils': 'Coils',
 		'Plasma': 'Plasma',
 		'Diagnostics': 'Diagnostics'
-	}).setWidth('189px').setFontSize('12px').onChange(function() {
+	}).setWidth('189px').setFontSize('12px').onChange(function () {
 		var category = this.getValue();
 		config.setKey('Category', category);
 
@@ -50,7 +50,7 @@ Sidebar.W7XModels = function(editor) {
 
 	var searchRow = new UI.Row();
 	searchRow.add(new UI.Text('Search').setWidth('90px'));
-	var searchInput = new UI.Input('').setWidth('183px').onKeyUp(function() {
+	var searchInput = new UI.Input('').setWidth('183px').onKeyUp(function () {
 
 		var searchString = this.getValue().toUpperCase();
 
@@ -133,7 +133,7 @@ Sidebar.W7XModels = function(editor) {
 	});
 
 	function addAssembliesToSidebar(info) {
-	for (var i = 0; i < info.length; i++) {
+		for (var i = 0; i < info.length; i++) {
 			var objectInfo = {};
 			objectInfo.title = info[i].name;
 			objectInfo.subtitle = info[i].machine + ' assembly #' + info[i].databaseID +
@@ -185,41 +185,43 @@ Sidebar.W7XModels = function(editor) {
 		}
 	}
 
-	function addAssembly(assemblyName, subids, overlayToRemove) {
+	function addAssembly(assemblyName, subids, downloadingOverlay) {
 		componentCount = 0;
 		for (var subidi in subids) {
-			addComponentById(subids[subidi], subids.length, assemblyName, overlayToRemove);
-			
+			addComponentById(subids[subidi], subids.length, assemblyName, downloadingOverlay);
+
 		}
 	}
 
-	function addSingleComponent(unusedName, arrayWithOnlyID, overlayToRemove) {
-		addComponentById(arrayWithOnlyID[0], 1, '', overlayToRemove);
+	function addSingleComponent(unusedName, arrayWithOnlyID, downloadingOverlay) {
+		addComponentById(arrayWithOnlyID[0], 1, '', downloadingOverlay);
 	}
 
-	function addCoils(configName, subids, overlayToRemove) {
+	function addCoils(configName, subids, downloadingOverlay) {
 		componentCount = 0;
 		for (var subidi in subids) {
-			addCoilById(subids[subidi], subids.length, configName, overlayToRemove);
+			addCoilById(subids[subidi], subids.length, configName, downloadingOverlay);
 		}
 	}
 
-	function addComponentById(id, numComponents, assemblyName, overlayToRemove) {
+	function addComponentById(id, numComponents, assemblyName, downloadingOverlay) {
 		fetch('http://esb.ipp-hgw.mpg.de:8280/services/ComponentsDbRest/component/' + id + '/data').then(
 			response => {
 				if (response.ok) return response.json();
 				else throw Error('Request rejected with status ${response.status}');
-			}).then(json => addObject('component', json, id, numComponents, assemblyName, makeMesh, overlayToRemove));
+			}).then(json => addObject('component', json, id, numComponents, assemblyName, makeMesh,
+			downloadingOverlay));
 	}
 
-	function addCoilById(id, numCoils, configName, overlayToRemove) {
+	function addCoilById(id, numCoils, configName, downloadingOverlay) {
 		fetch('http://esb.ipp-hgw.mpg.de:8280/services/CoilsDBRest/coil/' + id + '/data').then(response => {
 			if (response.ok) return response.json();
 			else throw Error('Request rejected with status ${response.status}');
-		}).then(json => addObject('coil', json, id, numCoils, configName, makeLine, overlayToRemove));
+		}).then(json => addObject('coil', json, id, numCoils, configName, makeLine, downloadingOverlay));
 	}
 
-	function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction, overlayToRemove) {
+	function addObject(type, json, id, numComponents, assemblyName, makeObjectFunction,
+		downloadingOverlay) {
 		var object = makeObjectFunction(json);
 		if (type == 'component') {
 			object.name = componentsInfo[id].name + ' (component #' + id + ')';
@@ -230,7 +232,7 @@ Sidebar.W7XModels = function(editor) {
 		if (numComponents == 1) {
 			editor.execute(new AddObjectCommand(object));
 			// Remove Downloading overlay
-			overlayToRemove.parentElement.removeChild(overlayToRemove);
+			downloadingOverlay.parentElement.removeChild(downloadingOverlay);
 		} else if (numComponents > 1) {
 			// Add to construction object
 			constructionObject.add(object);
@@ -245,7 +247,7 @@ Sidebar.W7XModels = function(editor) {
 				constructionObject.remove(constructionObject.children[0]);
 			}
 			// Remove Downloading overlay
-			overlayToRemove.parentElement.removeChild(overlayToRemove);
+			downloadingOverlay.parentElement.removeChild(downloadingOverlay);
 		}
 	}
 
