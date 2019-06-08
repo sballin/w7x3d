@@ -575,14 +575,10 @@ var Viewport = function ( editor ) {
 		scene.updateMatrixWorld();
 		renderer.render( scene, camera );
 
-		if ( renderer instanceof THREE.RaytracingRenderer === false ) {
+		if ( camera === editor.camera ) {
 
-			if ( camera === editor.camera ) {
-
-				sceneHelpers.updateMatrixWorld();
-				renderer.render( sceneHelpers, camera );
-
-			}
+			sceneHelpers.updateMatrixWorld();
+			renderer.render( sceneHelpers, camera );
 
 		}
 
