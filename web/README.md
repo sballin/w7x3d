@@ -17,4 +17,5 @@ A 3D scene editor for W7-X components. Powered by Three.js, componentsDB, and fo
                     *   `Sidebar.W7XFLTracer`, which lives in the first part of the `Magnetics` tab
                     *   `Sidebar.W7XVMEC`, which lives in the second part of the `Magnetics` tab
 *   Files related to core Three.js functions, like object loaders and mouse controls, are defined in the top `js` directory
+*   A code search utility like [ag](https://github.com/ggreer/the_silver_searcher) will help you find the code you want to edit by searching for strings displayed in the UI. Github search is also effective. Keep in mind that many UI strings are defined in `web/js/Strings.js`, so you'll probably want to search for the key defined there which corresponds to the UI string you saw
 
