@@ -229,7 +229,7 @@ Menubar.Add = function ( editor ) {
 		var intensity = 1;
 
 		var light = new THREE.HemisphereLight( skyColor, groundColor, intensity );
-		light.name = 'GlobalLight';
+		light.name = 'Global Light';
 
 		light.position.set( 0, 0, 20 );
 

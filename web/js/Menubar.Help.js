@@ -34,10 +34,10 @@ Menubar.Help = function ( editor ) {
 
 	var option = new UI.Row();
 	option.setClass( 'option' );
-	option.setTextContent( strings.getKey( 'menubar/help/about' ) );
+	option.setTextContent( 'Tutorial' );
 	option.onClick( function () {
 
-		window.open( 'https://github.com/sballin/w7x3d/wiki', '_blank' );
+		window.open( 'https://github.com/sballin/w7x3d/wiki/Getting-started-with-the-web-editor', '_blank' );
 
 	} );
 	options.add( option );
