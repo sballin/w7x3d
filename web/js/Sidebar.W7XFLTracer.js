@@ -135,7 +135,7 @@ Sidebar.W7XFLTracer = function (editor) {
 	// Poincare plot and trace lines buttons
 
 	var buttonsRow = new UI.Row();
-	var poincarePlot = new UI.Button('Add Poincaré plot').onClick(function () {
+	var poincarePlot = new UI.Button('Add Poincaré').onClick(function () {
 		callPoincare(this);
 	}).setWidth('134px');
 	var traceLines = new UI.Button('Add field lines').onClick(function () {
@@ -343,8 +343,6 @@ Sidebar.W7XFLTracer = function (editor) {
 				color: 0xFF0000,
 				linewidth: 1
 			});
-
-			console.log(json);
 
 			for (var i = 0; i < numStartingPoints; i++) {
 				var vec = [];

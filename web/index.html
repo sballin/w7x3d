@@ -53,22 +53,10 @@
 		<script src="../js/exporters/OBJExporter.js"></script>
 		<script src="../js/exporters/STLExporter.js"></script>
 
-		<link rel="stylesheet" href="js/libs/codemirror/codemirror.css">
-		<link rel="stylesheet" href="js/libs/codemirror/theme/monokai.css">
-		<script src="js/libs/codemirror/codemirror.js"></script>
-		<script src="js/libs/codemirror/mode/javascript.js"></script>
-		<script src="js/libs/codemirror/mode/glsl.js"></script>
-
 		<script src="js/libs/esprima.js"></script>
 		<script src="js/libs/jsonlint.js"></script>
 		<script src="js/libs/glslprep.min.js"></script>
 
-		<link rel="stylesheet" href="js/libs/codemirror/addon/dialog.css">
-		<link rel="stylesheet" href="js/libs/codemirror/addon/show-hint.css">
-		<link rel="stylesheet" href="js/libs/codemirror/addon/tern.css">
-		<script src="js/libs/codemirror/addon/dialog.js"></script>
-		<script src="js/libs/codemirror/addon/show-hint.js"></script>
-		<script src="js/libs/codemirror/addon/tern.js"></script>
 		<script src="js/libs/acorn/acorn.js"></script>
 		<script src="js/libs/acorn/acorn_loose.js"></script>
 		<script src="js/libs/acorn/walk.js"></script>
@@ -90,9 +78,6 @@
 
 		<script src="js/libs/app.js"></script>
 		<script src="js/Player.js"></script>
-		<script src="js/Script.js"></script>
-
-		<script src="../js/vr/WebVR.js"></script>
 
 		<script src="js/Storage.js"></script>
 
@@ -105,8 +90,6 @@
 		<script src="js/Menubar.Edit.js"></script>
 		<script src="js/Menubar.Add.js"></script>
 		<script src="js/Menubar.Play.js"></script>
-		<!-- <script src="js/Menubar.View.js"></script> (includes VR) -->
-		<script src="js/Menubar.Examples.js"></script>
 		<script src="js/Menubar.Help.js"></script>
 		<script src="js/Menubar.Status.js"></script>
 		<script src="js/Sidebar.js"></script>
@@ -133,7 +116,6 @@
 		<script src="js/Sidebar.Geometry.TubeGeometry.js"></script>
 		<script src="js/Sidebar.Material.js"></script>
 		<script src="js/Sidebar.Animation.js"></script>
-		<script src="js/Sidebar.Script.js"></script>
 		<script src="js/Sidebar.History.js"></script>
 		<script src="js/Strings.js"></script>
 		<script src="js/Toolbar.js"></script>
@@ -181,9 +163,6 @@
 
 			var toolbar = new Toolbar( editor );
 			document.body.appendChild( toolbar.dom );
-
-			var script = new Script( editor );
-			document.body.appendChild( script.dom );
 
 			var player = new Player( editor );
 			document.body.appendChild( player.dom );
@@ -343,7 +322,7 @@
 
 			}, false );
 			*/
-
+			
 		</script>
 	</body>
 </html>

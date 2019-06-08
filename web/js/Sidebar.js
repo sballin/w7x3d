@@ -83,7 +83,7 @@ var Sidebar = function (editor) {
 
 	}
 
-	select('W7-X');
+	select('SCENE');
 
 	return container;
 

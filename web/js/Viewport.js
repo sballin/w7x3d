@@ -39,6 +39,8 @@ var Viewport = function ( editor ) {
 		}
 
 	}
+	
+	grid.visible = false;
 
 	//
 

@@ -11,7 +11,7 @@ Sidebar.Settings.Viewport = function ( editor ) {
 
 	container.add( new UI.Text( strings.getKey( 'sidebar/settings/viewport/grid' ) ).setWidth( '90px' ) );
 
-	var show = new UI.THREE.Boolean( true ).onChange( update );
+	var show = new UI.THREE.Boolean( false ).onChange( update );
 	container.add( show );
 	container.add( new UI.Break() );
 	container.add( new UI.Break() );
