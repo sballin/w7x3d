@@ -37,7 +37,7 @@ Menubar.Help = function ( editor ) {
 	option.setTextContent( 'Tutorial' );
 	option.onClick( function () {
 
-		window.open( 'https://github.com/sballin/w7x3d/wiki/Getting-started-with-the-web-editor', '_blank' );
+		window.open( 'https://github.com/sballin/w7x3d/wiki/Web-editor-tutorial', '_blank' );
 
 	} );
 	options.add( option );
