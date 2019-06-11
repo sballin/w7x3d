@@ -49,6 +49,8 @@ var Viewport = function ( editor ) {
 	var selectionBox = new THREE.BoxHelper();
 	selectionBox.material.depthTest = false;
 	selectionBox.material.transparent = true;
+	selectionBox.material.color.setHex(0xFF0000);
+	selectionBox.material.opacity = 0.5;
 	selectionBox.visible = false;
 	sceneHelpers.add( selectionBox );
 
