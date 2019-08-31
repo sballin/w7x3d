@@ -1,0 +1,221 @@
+<!--
+    Download model from web services
+    Display it
+    Save as binary STL
+    For multi-component parts, save individual components AND groups separately
+-->
+
+<html>
+
+<head>
+    <title>w7xplorer</title>
+    <meta charset="utf-8">
+    <style>
+    body {
+        margin: 0;
+    }
+
+    canvas {
+        width: 100%;
+        height: 100%;
+    }
+
+    h4, p {
+        color: white;
+        text-align: left;
+    }
+    </style>
+    <script src="../js/three.min.js"></script>
+    <script src="../js/loaders/STLLoader.js"></script>
+    <script src="../js/controls/OrbitControls.js"></script>
+    <script src="../js/exporters/STLExporter.js"></script>
+    <script src="../js/exporters/GLTFExporter.js"></script>
+</head>
+
+<body>
+    <script>
+    // Initialize scene and renderer
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.001, 1e5);
+    camera.up = new THREE.Vector3(0, 0, 1);
+    camera.position.setX(0).setY(0).setZ(9);
+    camera.setFocalLength(11.057);
+    var renderer = new THREE.WebGLRenderer(
+    {
+        antialias: true,
+        alpha: true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(window.devicePixelRatio ? window.devicePixelRatio : 1);
+    renderer.sortObjects = false;
+    document.body.appendChild(renderer.domElement);
+
+    // Browser camera controls
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 1;
+    controls.enableZoom = true;
+    controls.maxDistance = 20;
+    controls.minDistance = 0.1;
+
+    // Basic lights
+    var ambientLight = new THREE.AmbientLight(0xffffff);
+    scene.add(ambientLight);
+    var pointLight = new THREE.PointLight(0xffffff);
+    pointLight.position.set(0, 0, 100);
+    pointLight.shadowMapVisible = true;
+    scene.add(pointLight);
+    
+    var numComponents;
+    var componentCount = 0;
+    var assembliesInfo;
+    var assemblyCount = 0;
+    var exporter = new THREE.STLExporter();
+    downloadComponents();
+
+    var render = function()
+    {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+    };
+
+    render();
+
+    function addComponent(json)
+    {
+        var data = json.surfaceMesh;
+        var vec = [];
+        var faces = [];
+
+        for (var i = 0; i < data.nodes.x1.length; i++)
+            vec.push(new THREE.Vector3(data.nodes.x1[i], data.nodes.x2[i], data.nodes.x3[i]));
+
+        if (data.numVertices[0] == 3)
+        {
+            for (var i = 0; i < data.polygons.length; i++)
+                faces.push(new THREE.Face3(data.polygons[i++] - 1, data.polygons[i++] - 1, data.polygons[i] - 1));
+        }
+        else
+        {
+            for (var i = 0; i < data.polygons.length; i++)
+            {
+                v1 = data.polygons[i++] - 1;
+                v2 = data.polygons[i++] - 1;
+                v3 = data.polygons[i++] - 1;
+                v4 = data.polygons[i] - 1;
+                faces.push(new THREE.Face3(v1, v2, v3));
+                faces.push(new THREE.Face3(v1, v3, v4));
+            }
+        }
+
+        var geometry4 = new THREE.Geometry();
+        geometry4.vertices = vec;
+        geometry4.faces = faces;
+        geometry4.computeFaceNormals();
+
+        var material3 = new THREE.MeshStandardMaterial(
+        {
+            color: 0x666666,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.7,
+            flatShading: false,
+            metalness: 0.5,
+            roughness: 0.5
+        });
+        var line4 = new THREE.Mesh(geometry4, material3);
+        //line4.name = id.toString();
+        scene.add(line4);
+        var vec = geometry4.vertices[0];
+        // addLabel(id.toString(), vec.x,vec.y, vec.z);
+    }
+    
+    function downloadComponents() {
+        addComponentById(0);
+    }
+    
+    function addComponentById(id) {
+        var material3 = new THREE.MeshLambertMaterial(
+        {
+            color: 0x555555,
+            side: THREE.DoubleSide,
+            transparent: true,
+            opacity: 0.8
+        });
+        
+        fetch('components/' + id + '.json').then(response => { if (response.ok) return response.json(); else throw Error('Request rejected with status ${response.status}'); }).then(json => addMesh(json)).then(function () {saveArrayBuffer( exporter.parse( scene, { binary: true } ), id + '.stl' );}).then(clearScene).then(function () { console.log(id); addComponentById(id+1);});
+        
+        function addMesh(json) {
+            var data = json.surfaceMesh;
+
+            if (data == undefined)
+                data = json.volumeMesh.faces;
+
+            var vec = [];
+            var faces = [];
+
+            for (var i = 0; i < data.nodes.x1.length; i++)
+                vec.push(new THREE.Vector3(data.nodes.x1[i], data.nodes.x2[i], data.nodes.x3[i]));
+
+            if (data.numVertices[0] == 3)
+            {
+                for (var i = 0; i < data.polygons.length; i++)
+                    faces.push(new THREE.Face3(data.polygons[i++] - 1, data.polygons[i++] - 1, data.polygons[i] - 1));
+            }
+            else
+            {
+                for (var i = 0; i < data.polygons.length; i++)
+                {
+                    v1 = data.polygons[i++] - 1;
+                    v2 = data.polygons[i++] - 1;
+                    v3 = data.polygons[i++] - 1;
+                    v4 = data.polygons[i] - 1;
+                    faces.push(new THREE.Face3(v1, v2, v3));
+                    faces.push(new THREE.Face3(v1, v3, v4));
+                }
+            }
+
+            var geometry4 = new THREE.Geometry();
+            geometry4.vertices = vec;
+            geometry4.faces = faces;
+            geometry4.computeFaceNormals();
+
+            var line4 = new THREE.Mesh(geometry4, material3);
+            scene.add(line4);
+            var vec = geometry4.vertices[0];
+        }
+        
+    }
+    
+    function clearScene() {
+        // Clear scene
+        while (scene.children.length > 0)
+            scene.remove(scene.children[0]); 
+    }
+    
+    function saveString( text, filename ) {
+
+        save( new Blob( [ text ], { type: 'text/plain' } ), filename );
+
+    }
+    
+    function saveArrayBuffer( buffer, filename ) {
+        
+        save( new Blob( [ buffer ], { type: 'application/octet-stream' } ), filename );
+        
+    }
+        
+    var link = document.createElement( 'a' );
+    function save( blob, filename ) {
+
+        link.href = URL.createObjectURL( blob );
+        link.download = filename || 'data.json';
+        link.dispatchEvent( new MouseEvent( 'click' ) );
+
+        // URL.revokeObjectURL( url ); breaks Firefox...
+
+    }
+    </script>
+</body>
+
+</html>
