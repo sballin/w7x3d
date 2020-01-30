@@ -42,11 +42,19 @@ Sidebar.W7XFLTracer = function (editor) {
 
 	var precalcRow = new UI.Row();
 	var precalc = new UI.Checkbox(true).setWidth('25px');
-
 	precalcRow.add(new UI.Text('Pre-calculated B field grid').setWidth('90px'));
 	precalcRow.add(precalc);
+	
 	container.add(precalcRow);
 
+	// Invert B field direction
+
+	var invertBRow = new UI.Row();
+	var invertB = new UI.Checkbox(false).setWidth('25px');
+	invertBRow.add(new UI.Text('Invert B field').setWidth('90px'));
+	invertBRow.add(invertB);
+	
+	container.add(invertBRow);
 	container.add(new UI.Break());
 
 	// Start points
@@ -230,9 +238,10 @@ Sidebar.W7XFLTracer = function (editor) {
 
 		var payload = '<flt:trace xmlns:flt="fltracer.gsoap.boz.hgw.ipp.mpg.de"><points>';
 		payload += x1Tags + x2Tags + x3Tags;
-		payload += '</points><config><configIds>' + configID + '</configIds>' + grid +
-			'</config><task><step>' + step + '</step><poincare><phi0>' + phi + '</phi0><numPoints>' +
-			numPoints + '</numPoints></poincare></task></flt:trace>';
+		payload += '</points><config><configIds>' + configID + '</configIds>' + grid + '<inverseField>' +
+		           invertB.getValue() + '</inverseField>' + '</config><task><step>' + step + 
+		           '</step><poincare><phi0>' + phi + '</phi0><numPoints>' + numPoints + 
+		           '</numPoints></poincare></task></flt:trace>';
 
 		var poincareScript = "http://webservices.ipp-hgw.mpg.de/docs/makeWSRequestPoincare.jag";
 		$.get(poincareScript, payload, function (json) {
@@ -331,7 +340,7 @@ Sidebar.W7XFLTracer = function (editor) {
 
 		var payload = '<flt:trace xmlns:flt="fltracer.gsoap.boz.hgw.ipp.mpg.de"><points>';
 		payload += x1Tags + x2Tags + x3Tags;
-		payload += '</points><config><configIds>' + configID + '</configIds>' + grid + '</config>' +
+		payload += '</points><config><configIds>' + configID + '</configIds>' + grid + '<inverseField>' + invertB.getValue() + '</inverseField>' + '</config>' +
 			'<task><step>' + step + '</step><lines><numSteps>' + numSteps +
 			'</numSteps><globalError>false</globalError><localError>false</localError></lines></task></flt:trace>';
 
@@ -363,7 +372,7 @@ Sidebar.W7XFLTracer = function (editor) {
 			editor.execute(new AddObjectCommand(lineObj));
 			button.dom.removeChild(busyOverlay);
 		}).fail(response => {
-			console.log('Poincaré failed', response);
+			console.log('Field line tracer failed', response);
 			alert('Operation failed—settings may be invalid. See developer tools console for more info.');
 			button.dom.removeChild(busyOverlay);
 		});
