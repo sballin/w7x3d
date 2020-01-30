@@ -3,51 +3,37 @@ from os.path import join, isfile, isdir, dirname
 import shutil
 import glob
 import requests
-from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
 import numpy as np
 import webbrowser
-
-
-class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
-    def do_GET(self):
-        try:
-            if self.path == '/':
-                self.path = 'index.html'
-            if self.path[0] == '/':
-                self.path = self.path[1:]
-            if self.path == 'is_running':
-                
-                return
-            with open(join('scene_html', self.path), 'rb') as f:
-                self.send_response(200)
-                self.end_headers()
-                self.wfile.write(f.read())
-        except Exception as e:
-            print(self.path, join('scene_html', self.path), e)
-            self.send_response(404)
-            self.end_headers()
            
 
-class Scene():
-    def __init__(self):
+class Scene:
+    def __init__(self, jsonFilename=None):
+        # Simple dictionary describing scene
         self.scene = {'background': 'white',
                       'camera_position': [10, 10, 10],
-                      'camera_target': [0, 0, 0]}
+                      'camera_target': [0, 0, 0]}   
+                      
+        # More complicated JSON that can be loaded by web viewer
+        if jsonFilename:
+            self.loadJSON(jsonFilename)
+        else:
+            self.json = {}
         
-    def add_line(self, x, y, z, color='black'):
+    def addLine(self, x, y, z, color='black'):
         pass
         
-    def add_point(self, x, y, z, radius=0.005, phi=None):
+    def addPoint(self, x, y, z, radius=0.005, phi=None):
         pass
         
-    def add_points(self, x, y, z, radius=0.005, phi=None):
+    def addPoints(self, x, y, z, radius=0.005, phi=None):
         pass
         
-    def add_json(self, json):
+    def addJSON(self, json):
         pass
         
-    def download_by_number(self, number):
+    def downloadByNumber(self, number):
         pass
         
     def saveLCFSjson(self):
@@ -83,7 +69,38 @@ class Scene():
                 f.write(json.dumps({"name": config_name, "r": lcfs_rs, "z": lcfs_zs, "phi": toroidal_angles}, separators=(',', ':')))
 
 
-    def view_scene(self):
+    def loadJSON(self, filename):
+        with open(filename, 'r') as f:
+            self.json = json.load(f)
+        
+    def writeJSON(self):
+        pass
+        
+    def view(self):
+        """
+        Opens scene in web browser.
+        """
+        with open('../js/three.min.js', 'r') as f:
+            threejs = f.read()
+        with open('../js/controls/OrbitControls.js', 'r') as f:
+            orbitControls = f.read()
+        with open('../js/loaders/deprecated/legacyJSONloader.js', 'r') as f:
+            legacyJSONloader = f.read()
+        
+        # Populate template and output finished file to scene directory
+        with open('template_json.html', 'r') as f:
+            template = f.read()
+        output = template.replace('{{threejs}}', threejs)
+        output = output.replace('{{orbitControls}}', orbitControls)
+        output = output.replace('{{legacyJSONloader}}', legacyJSONloader)
+        output = output.replace('{{json}}', json.dumps(self.json))
+        with open('index.html', 'w') as f:
+            f.write(output)
+            
+        webbrowser.open('file://' + os.path.join(os.getcwd(), 'index.html'))
+
+
+    def viewOld(self):
         """
         Opens scene in web browser.
         """
@@ -114,11 +131,3 @@ class Scene():
         output = template.replace('{{scene}}', scene)
         with open(join('scene_html', 'index.html'), 'w') as f:
             f.write(output)
-
-        # Start serving page and open in browser
-        # httpd = HTTPServer(('localhost', 9000), SimpleHTTPRequestHandler)
-        # webbrowser.open_new_tab('http://localhost:9000')
-        # httpd.serve_forever()
-
-    def to_json(self):
-        pass
