@@ -12,7 +12,7 @@ var Strings = function ( config ) {
 
 			'menubar/file': 'File',
 			'menubar/file/new': 'New Scene',
-			'menubar/file/import': 'Import Scene JSON',
+			'menubar/file/import': 'Import Object or Scene',
 			'menubar/file/export/geometry': 'Object to JSON',
 			'menubar/file/export/object': 'Export Object',
 			'menubar/file/export/scene': 'Scene to JSON',
