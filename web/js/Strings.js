@@ -12,7 +12,7 @@ var Strings = function ( config ) {
 
 			'menubar/file': 'File',
 			'menubar/file/new': 'New Scene',
-			'menubar/file/import': 'Import Object or Scene',
+			'menubar/file/import': 'Import Object/Scene',
 			'menubar/file/export/geometry': 'Object to JSON',
 			'menubar/file/export/object': 'Export Object',
 			'menubar/file/export/scene': 'Scene to JSON',
@@ -22,7 +22,7 @@ var Strings = function ( config ) {
 			'menubar/file/export/obj': 'Export OBJ',
 			'menubar/file/export/stl': 'Export STL',
 			'menubar/file/export/stl_binary': 'Scene to STL',
-			'menubar/file/publish': 'Publish',
+			'menubar/file/publish': 'Scene to HTML',
 
 			'menubar/edit': 'Edit',
 			'menubar/edit/undo': 'Undo (Ctrl+Z)',

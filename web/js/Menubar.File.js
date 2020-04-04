@@ -182,10 +182,6 @@ Menubar.File = function (editor) {
 	});
 	options.add(option);
 
-	//
-
-	options.add(new UI.HorizontalRule());
-
 	// // Export DAE
 
 	// var option = new UI.Row();
