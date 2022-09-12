@@ -68,7 +68,7 @@ var Strings = function ( config ) {
 			'menubar/help': 'Help',
 			'menubar/help/source_code': 'Source Code',
 			'menubar/help/about': 'Help Wiki',
-			'menubar/help/contact': 'Contact',
+			'menubar/help/contact': 'Contact: Sean (sballin@mit.edu)',
 
 			'sidebar/scene': 'Scene',
 			'sidebar/scene/background': 'Background',
